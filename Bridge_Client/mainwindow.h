@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "login.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +17,7 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    Login *login;
 };
 
 #endif // MAINWINDOW_H

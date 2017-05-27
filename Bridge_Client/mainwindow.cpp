@@ -2,13 +2,14 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
+    this->setFixedSize(800,600);
+
+    login = new Login(this);
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+
 }
