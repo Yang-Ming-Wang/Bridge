@@ -16,6 +16,17 @@ Login::Login(QWidget *parent) : QWidget(parent)
     registerbtn->setGeometry(550,450,200,100);
     registerbtn->setToolTip("Register a Account");
 
+    account = new QLineEdit(parent);
+    account->setPlaceholderText("your account:");
+    account->setGeometry(100,100,300,50);
+    account->setMaxLength(15);
+
+    password = new QLineEdit(parent);
+    password->setPlaceholderText("your password:");
+    password->setEchoMode(QLineEdit::Password);
+    password->setGeometry(100,200,300,50);
+    password->setMaxLength(15);
+
 }
 
 int Login::connect_to_server()

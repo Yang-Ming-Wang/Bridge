@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QPushButton>
+#include <QLineEdit>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -18,6 +19,7 @@ private slots:
     int connect_to_server(void);
 private:
     QPushButton *exitbtn,*loginbtn,*registerbtn;
+    QLineEdit *account,*password;
 };
 
 #endif // LOGIN_H
