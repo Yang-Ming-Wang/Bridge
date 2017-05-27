@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include "server.h"
 
 int main(void)
 {
-    printf("Server side\n");
+    Server server;
     return 0;
 }

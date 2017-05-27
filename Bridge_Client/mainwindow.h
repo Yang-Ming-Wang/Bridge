@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 #include "login.h"
 
 namespace Ui {
