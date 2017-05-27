@@ -10,7 +10,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
     loginbtn = new QPushButton("Login",parent);
     loginbtn->setGeometry(300,450,200,100);
     loginbtn->setToolTip("Login to the Server");
-    connect(loginbtn,SIGNAL(clicked()),this,SLOT(connect_to_server()));
+    connect(loginbtn,SIGNAL(clicked()),this,SLOT(login_to_server()));
 
     registerbtn = new QPushButton("Register",parent);
     registerbtn->setGeometry(550,450,200,100);
@@ -26,6 +26,28 @@ Login::Login(QWidget *parent) : QWidget(parent)
     password->setEchoMode(QLineEdit::Password);
     password->setGeometry(100,200,300,50);
     password->setMaxLength(15);
+
+    status = new QLabel(parent);
+    status->setGeometry(300,300,200,100);
+
+}
+
+void Login::login_to_server()
+{
+    int socket;
+    socket = connect_to_server();
+    qDebug(account->text().toLatin1());
+    qDebug(password->text().toLatin1());
+    if (socket >= 0) {
+        char buf[10] = "Qt_Client";
+        write(socket,buf,10);
+        status->setStyleSheet("QLabel {color:green}");
+        status->setText("login sucessfully");
+    } else {
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("failed login");
+    }
+
 
 }
 
@@ -45,12 +67,9 @@ int Login::connect_to_server()
     if (inet_pton(AF_INET,"127.0.0.1",&servaddr.sin_addr) <= 0)
         printf("inet_ption error for 127.0.0.1\n");
 
-    if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0)
+    if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0) {
         printf("connect error\n");
-    else
-        printf("Successful Login.\n");
-    //test socket
-    char buf[10] = "Client";
-    write(sockfd,buf,10);
+        return -1;
+    }
     return sockfd;
 }

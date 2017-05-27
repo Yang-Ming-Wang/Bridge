@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QLabel>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -16,10 +17,12 @@ public:
     explicit Login(QWidget *parent = nullptr);
 
 private slots:
-    int connect_to_server(void);
+    void login_to_server(void);
 private:
+    int connect_to_server(void);
     QPushButton *exitbtn,*loginbtn,*registerbtn;
     QLineEdit *account,*password;
+    QLabel *status;
 };
 
 #endif // LOGIN_H
