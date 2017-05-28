@@ -15,11 +15,15 @@ class Login : public QWidget
 
 public:
     explicit Login(QWidget *parent = nullptr);
-
+public slots:
+    void show_everything(void);
+signals:
+    void stage_change(void);
 private slots:
     void login_to_server(void);
 private:
     int connect_to_server(void);
+    void hide_everything(void);
     QPushButton *exitbtn,*loginbtn,*registerbtn;
     QLineEdit *account,*password;
     QLabel *status;

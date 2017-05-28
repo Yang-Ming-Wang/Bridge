@@ -2,6 +2,7 @@
 
 Login::Login(QWidget *parent) : QWidget(parent)
 {
+
     exitbtn = new QPushButton("Exit",parent);
     exitbtn->setGeometry(50,450,200,100);
     exitbtn->setToolTip("Quit the Game");
@@ -41,14 +42,14 @@ void Login::login_to_server()
     if (socket >= 0) {
         char buf[10] = "Qt_Client";
         write(socket,buf,10);
-        status->setStyleSheet("QLabel {color:green}");
-        status->setText("login sucessfully");
+        hide_everything();
+        emit stage_change();
     } else {
         status->setStyleSheet("QLabel {color:red}");
         status->setText("failed login");
     }
 
-
+    return ;
 }
 
 int Login::connect_to_server()
@@ -72,4 +73,30 @@ int Login::connect_to_server()
         return -1;
     }
     return sockfd;
+}
+
+void Login::hide_everything(void)
+{
+    exitbtn->hide();
+    loginbtn->hide();
+    registerbtn->hide();
+
+    account->hide();
+    password->hide();
+
+    status->hide();
+
+    return ;
+}
+
+void Login::show_everything(void)
+{
+    exitbtn->show();
+    loginbtn->show();
+    registerbtn->show();
+
+    account->show();
+    password->show();
+
+    status->show();
 }
