@@ -33,6 +33,3 @@ HEADERS += \
         mainwindow.h \
         login.h \
         lobby.h
-
-FORMS += \
-        mainwindow.ui

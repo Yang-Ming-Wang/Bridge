@@ -58,7 +58,7 @@ int Login::connect_to_server()
     struct sockaddr_in servaddr;
 
     if ((sockfd = socket(AF_INET,SOCK_STREAM,0)) < 0 )
-        printf("socket error\n");
+        qDebug("socket error");
 
     bzero(&servaddr,sizeof(servaddr));
 
@@ -69,7 +69,7 @@ int Login::connect_to_server()
         printf("inet_ption error for 127.0.0.1\n");
 
     if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0) {
-        printf("connect error\n");
+        qDebug("connect error");
         return -1;
     }
     return sockfd;

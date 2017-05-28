@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     login = new Login(this);
     lobby = new Lobby(this);
     connect(login,SIGNAL(stage_change()),lobby,SLOT(show_everything()));
+    connect(lobby,SIGNAL(go_back()),login,SLOT(show_everything()));
 }
 
 MainWindow::~MainWindow()
