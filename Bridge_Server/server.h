@@ -14,6 +14,7 @@ public:
     Server();
 private:
     int prepare_server();
+    static void* worker(void*);
 };
 
 #endif // SERVER_H

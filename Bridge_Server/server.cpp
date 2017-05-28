@@ -1,27 +1,36 @@
 #include "server.h"
 
-void* worker(void *sock)
+void recv_client_account(int sockfd)
+{
+    int isreg,result;
+    char account[15],password[15];
+
+    do {
+        read(sockfd,&isreg,sizeof(int));
+
+        read(sockfd,account,15);
+        printf("your account [%s]\n",account);
+
+        read(sockfd,password,15);
+        printf("your password [%s]\n",password);
+
+        if (isreg == 1) {
+            printf("registor\n");
+        } else {
+            printf("login\n");
+        }
+        //for test perpose.
+        result = 1;
+        write(sockfd,&result,sizeof(int));
+    } while (isreg == 1 || result != 1);
+
+}
+
+void* Server::worker(void *sock)
 {
     int socket = *(int *)sock;
-    char buf[256];
-    int isreg,result;
 
-    read(socket,&isreg,sizeof(int));
-
-    read(socket,buf,15);
-    printf("your account [%s]\n",buf);
-
-    read(socket,buf,15);
-    printf("your password [%s]\n",buf);
-
-    if (isreg == 1) {
-        printf("registor\n");
-    } else {
-        printf("login\n");
-    }
-    //for test perpose.
-    result = 1;
-    write(socket,&result,sizeof(int));
+    recv_client_account(socket);
 
     pthread_exit(NULL);
 }
@@ -36,7 +45,7 @@ Server::Server()
     listenfd = prepare_server();
 
     recv = sizeof(recvaddr);
-    printf("Hello world server\n");
+    printf("Server Activated!!\n");
     for (i = 0;i < 4;i++) {
 
         do socket[i] = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
