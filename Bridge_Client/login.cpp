@@ -16,6 +16,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
     registerbtn = new QPushButton("Register",parent);
     registerbtn->setGeometry(550,450,200,100);
     registerbtn->setToolTip("Register a Account");
+    connect(registerbtn,SIGNAL(clicked()),this,SLOT(register_to_server()));
 
     account = new QLineEdit(parent);
     account->setPlaceholderText("your account:");
@@ -35,13 +36,33 @@ Login::Login(QWidget *parent) : QWidget(parent)
 
 void Login::login_to_server()
 {
+    send_account(0);
+    return ;
+}
+
+void Login::register_to_server()
+{
+    send_account(1);
+    return ;
+}
+
+void Login::send_account(int isreg)
+{
+    char buffer[15];
     int socket;
+
     socket = connect_to_server();
-    qDebug(account->text().toLatin1());
-    qDebug(password->text().toLatin1());
     if (socket >= 0) {
-        char buf[10] = "Qt_Client";
-        write(socket,buf,10);
+        write(socket,&isreg,sizeof(int));
+
+        bzero(buffer,15);
+        strcpy(buffer,account->text().toStdString().c_str());
+        write(socket,buffer,15);
+
+        bzero(buffer,15);
+        strcpy(buffer,password->text().toStdString().c_str());
+        write(socket,buffer,15);
+
         hide_everything();
         emit stage_change();
     } else {

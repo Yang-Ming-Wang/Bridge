@@ -21,8 +21,10 @@ signals:
     void stage_change(void);
 private slots:
     void login_to_server(void);
+    void register_to_server(void);
 private:
     int connect_to_server(void);
+    void send_account(int);
     void hide_everything(void);
     QPushButton *exitbtn,*loginbtn,*registerbtn;
     QLineEdit *account,*password;
