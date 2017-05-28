@@ -32,45 +32,75 @@ Login::Login(QWidget *parent) : QWidget(parent)
     status = new QLabel(parent);
     status->setGeometry(300,300,200,100);
 
+    sockfd = connect_to_server();
 }
 
 void Login::login_to_server()
 {
-    send_account(0);
+    int result;
+    result = send_account(0);
+
+    switch (result) {
+    case 1:
+        hide_everything();
+        emit stage_change();
+        break;
+    case 2:
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("Account not exist!!");
+        break;
+    case 3:
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("Password Incorrect!!");
+        break;
+    default:
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("Socket error!!");
+    }
     return ;
 }
 
 void Login::register_to_server()
 {
-    send_account(1);
+    int result;
+    result = send_account(1);
+
+    switch (result) {
+    case 1:
+        status->setStyleSheet("QLabel {color:green}");
+        status->setText("register success!!");
+        break;
+    case 2:
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("try another account!!");
+        break;
+    default:
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("Socket error!!");
+    }
     return ;
 }
 
-void Login::send_account(int isreg)
+int Login::send_account(int isreg)
 {
     char buffer[15];
-    int socket;
+    int success;
 
-    socket = connect_to_server();
-    if (socket >= 0) {
-        write(socket,&isreg,sizeof(int));
+    if (sockfd >= 0) {
+        write(sockfd,&isreg,sizeof(int));
 
         bzero(buffer,15);
         strcpy(buffer,account->text().toStdString().c_str());
-        write(socket,buffer,15);
+        write(sockfd,buffer,15);
 
         bzero(buffer,15);
         strcpy(buffer,password->text().toStdString().c_str());
-        write(socket,buffer,15);
+        write(sockfd,buffer,15);
 
-        hide_everything();
-        emit stage_change();
-    } else {
-        status->setStyleSheet("QLabel {color:red}");
-        status->setText("failed login");
+        read(sockfd,&success,sizeof(int));
+        return success;
     }
-
-    return ;
+    return -1;
 }
 
 int Login::connect_to_server()

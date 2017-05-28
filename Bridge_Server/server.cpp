@@ -4,20 +4,24 @@ void* worker(void *sock)
 {
     int socket = *(int *)sock;
     char buf[256];
-    //test socket
+    int isreg,result;
 
-    int isreg;
     read(socket,&isreg,sizeof(int));
-    if (isreg == 1) {
-        printf("registor\n");
-    } else {
-        printf("login\n");
-    }
+
     read(socket,buf,15);
     printf("your account [%s]\n",buf);
 
     read(socket,buf,15);
     printf("your password [%s]\n",buf);
+
+    if (isreg == 1) {
+        printf("registor\n");
+    } else {
+        printf("login\n");
+    }
+    //for test perpose.
+    result = 1;
+    write(socket,&result,sizeof(int));
 
     pthread_exit(NULL);
 }

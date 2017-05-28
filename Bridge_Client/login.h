@@ -24,11 +24,12 @@ private slots:
     void register_to_server(void);
 private:
     int connect_to_server(void);
-    void send_account(int);
+    int send_account(int);
     void hide_everything(void);
     QPushButton *exitbtn,*loginbtn,*registerbtn;
     QLineEdit *account,*password;
     QLabel *status;
+    int sockfd;
 };
 
 #endif // LOGIN_H
