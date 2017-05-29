@@ -18,16 +18,21 @@ Login::Login(QWidget *parent) : QWidget(parent)
     registerbtn->setToolTip("Register a Account");
     connect(registerbtn,SIGNAL(clicked()),this,SLOT(register_to_server()));
 
+    QRegExp rx("\\w+");
+    QRegExpValidator *validator = new QRegExpValidator(rx,parent);
+
     account = new QLineEdit(parent);
     account->setPlaceholderText("your account:");
     account->setGeometry(100,100,300,50);
     account->setMaxLength(15);
+    account->setValidator(validator);
 
     password = new QLineEdit(parent);
     password->setPlaceholderText("your password:");
     password->setEchoMode(QLineEdit::Password);
     password->setGeometry(100,200,300,50);
     password->setMaxLength(15);
+    password->setValidator(validator);
 
     status = new QLabel(parent);
     status->setGeometry(300,300,200,100);

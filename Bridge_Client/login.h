@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
+#include <QRegExpValidator>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
