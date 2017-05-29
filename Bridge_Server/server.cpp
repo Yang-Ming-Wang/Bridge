@@ -1,44 +1,8 @@
 #include "server.h"
 
-void recv_client_account(int sockfd)
-{
-    int isreg,result;
-    char account[15],password[15];
-
-    do {
-        read(sockfd,&isreg,sizeof(int));
-
-        read(sockfd,account,15);
-        printf("your account [%s]\n",account);
-
-        read(sockfd,password,15);
-        printf("your password [%s]\n",password);
-
-        if (isreg == 1) {
-            printf("registor\n");
-        } else {
-            printf("login\n");
-        }
-        //for test perpose.
-        result = 1;
-        write(sockfd,&result,sizeof(int));
-    } while (isreg == 1 || result != 1);
-
-}
-
-void* Server::worker(void *sock)
-{
-    int socket = *(int *)sock;
-
-    recv_client_account(socket);
-
-    pthread_exit(NULL);
-}
-
 Server::Server()
 {
     int i,listenfd,socket[4];
-    pthread_t threads[4];
     struct sockaddr_in recvaddr;
     socklen_t recv;
 
@@ -46,15 +10,14 @@ Server::Server()
 
     recv = sizeof(recvaddr);
     printf("Server Activated!!\n");
-    for (i = 0;i < 4;i++) {
 
+    for (i = 0;i < 4;i++) {
         do socket[i] = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
         while (socket[i] < 0 && errno == EINTR);
 
-        pthread_create(&threads[i],NULL,worker,(void*)&socket[i]);
-        pthread_detach(threads[i]);
+        worker[i] = new WorkerThread(socket[i]);
+        worker[i]->start();
     }
-    pthread_exit(NULL);
 }
 
 int Server::prepare_server()
