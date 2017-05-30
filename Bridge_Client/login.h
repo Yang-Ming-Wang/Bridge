@@ -16,6 +16,7 @@ class Login : public QWidget
 
 public:
     explicit Login(QWidget *parent = nullptr);
+    int getsocket();
 public slots:
     void show_everything(void);
 signals:

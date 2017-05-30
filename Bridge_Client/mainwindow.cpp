@@ -5,8 +5,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     this->setFixedSize(800,600);
 
+    int sockfd;
+
     login = new Login(this);
+    sockfd = login->getsocket();
     lobby = new Lobby(this);
+    lobby->setsocket(sockfd);
+
     connect(login,SIGNAL(stage_change()),lobby,SLOT(show_everything()));
     connect(lobby,SIGNAL(go_back()),login,SLOT(show_everything()));
 }

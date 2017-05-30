@@ -32,5 +32,13 @@ void Lobby::show_everything(void)
 void Lobby::logout_from_server(void)
 {
     hide_everything();
+
+    int logout = 1;
+    write(sockfd,&logout,sizeof(int));
     emit go_back();
+}
+
+void Lobby::setsocket(int sock)
+{
+    sockfd = sock;
 }

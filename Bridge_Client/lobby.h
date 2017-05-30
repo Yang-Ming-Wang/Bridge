@@ -4,12 +4,14 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPushButton>
+#include <unistd.h>
 
 class Lobby : public QWidget
 {
     Q_OBJECT
 public:
     explicit Lobby(QWidget *parent = nullptr);
+    void setsocket(int);
 
 signals:
     void go_back(void);
@@ -22,6 +24,7 @@ private slots:
 
 private:
     void hide_everything(void);
+    int sockfd;
     QLabel *label;
     QPushButton *logout;
 };

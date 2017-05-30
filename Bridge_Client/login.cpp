@@ -156,3 +156,8 @@ void Login::show_everything(void)
 
     status->show();
 }
+
+int Login::getsocket()
+{
+    return sockfd;
+}
