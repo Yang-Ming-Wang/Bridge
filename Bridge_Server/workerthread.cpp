@@ -42,9 +42,8 @@ void WorkerThread::recv_client_account(void)
 void WorkerThread::run(void)
 {
     int logout;
-    recv_client_account();
-    read(sockfd,&logout,sizeof(int));
-    if (logout == 1) {
-        printf("client logout\n");
-    }
+    do {
+        recv_client_account();
+        read(sockfd,&logout,sizeof(int));
+    } while (logout == 1);
 }
