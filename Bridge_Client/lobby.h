@@ -26,7 +26,7 @@ private:
     void hide_everything(void);
     int sockfd;
     QLabel *label;
-    QPushButton *logout;
+    QPushButton *logout,*join;
 };
 
 #endif // LOBBY_H

@@ -4,12 +4,17 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
 {
     label = new QLabel(parent);
     label->setText("In Lobby");
-    label->setGeometry(400,300,200,100);
+    label->setGeometry(600,300,200,100);
 
     logout = new QPushButton(parent);
     logout->setText("Logout");
     logout->setToolTip("Logout from server");
-    logout->setGeometry(300,400,200,100);
+    logout->setGeometry(400,700,200,100);
+
+    join = new QPushButton(parent);
+    join->setText("Join Game");
+    join->setToolTip("Join to the Bridge Game");
+    join->setGeometry(800,700,200,100);
 
     connect(logout,SIGNAL(clicked()),this,SLOT(logout_from_server()));
 
@@ -21,12 +26,14 @@ void Lobby::hide_everything(void)
 {
     label->hide();
     logout->hide();
+    join->hide();
 }
 
 void Lobby::show_everything(void)
 {
     label->show();
     logout->show();
+    join->show();
 }
 
 void Lobby::logout_from_server(void)

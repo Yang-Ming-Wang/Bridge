@@ -4,17 +4,17 @@ Login::Login(QWidget *parent) : QWidget(parent)
 {
 
     exitbtn = new QPushButton("Exit",parent);
-    exitbtn->setGeometry(50,450,200,100);
+    exitbtn->setGeometry(150,700,200,100);
     exitbtn->setToolTip("Quit the Game");
     connect(exitbtn,SIGNAL(clicked()),QApplication::instance(),SLOT(quit()));
 
     loginbtn = new QPushButton("Login",parent);
-    loginbtn->setGeometry(300,450,200,100);
+    loginbtn->setGeometry(650,700,200,100);
     loginbtn->setToolTip("Login to the Server");
     connect(loginbtn,SIGNAL(clicked()),this,SLOT(login_to_server()));
 
     registerbtn = new QPushButton("Register",parent);
-    registerbtn->setGeometry(550,450,200,100);
+    registerbtn->setGeometry(1150,700,200,100);
     registerbtn->setToolTip("Register a Account");
     connect(registerbtn,SIGNAL(clicked()),this,SLOT(register_to_server()));
 
@@ -23,19 +23,19 @@ Login::Login(QWidget *parent) : QWidget(parent)
 
     account = new QLineEdit(parent);
     account->setPlaceholderText("your account:");
-    account->setGeometry(100,100,300,50);
+    account->setGeometry(150,300,300,50);
     account->setMaxLength(15);
     account->setValidator(validator);
 
     password = new QLineEdit(parent);
     password->setPlaceholderText("your password:");
     password->setEchoMode(QLineEdit::Password);
-    password->setGeometry(100,200,300,50);
+    password->setGeometry(150,400,300,50);
     password->setMaxLength(15);
     password->setValidator(validator);
 
     status = new QLabel(parent);
-    status->setGeometry(300,300,200,100);
+    status->setGeometry(300,500,200,100);
 
     sockfd = connect_to_server();
 }
