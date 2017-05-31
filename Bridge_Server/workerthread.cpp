@@ -32,6 +32,10 @@ void WorkerThread::recv_client_account(void)
         } else {
             printf("login\n");
             result = userlist.login(account,password);
+            if (result == 1) {
+                userlist.loginuser(account);
+                strcpy(nowaccount,account);
+            }
         }
         write(sockfd,&result,sizeof(int));
     } while (isreg == 1 || result != 1);
@@ -45,5 +49,9 @@ void WorkerThread::run(void)
     do {
         recv_client_account();
         read(sockfd,&logout,sizeof(int));
+        if (logout == 1) {
+            userlist.logoutuser(nowaccount);
+            bzero(nowaccount,15);
+        }
     } while (logout == 1);
 }

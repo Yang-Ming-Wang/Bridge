@@ -3,6 +3,7 @@
 Userlist::Userlist()
 {
     usernum = 0;
+    loginnum = 0;
     readuserfile();
 }
 
@@ -11,7 +12,7 @@ int Userlist::login(char *account,char *password)
     for (int i = 0;i < usernum;i ++) {
         if (validaccount[i] == account) {
             if (validpassword[i] == password) {
-                printf("login success\n");
+        printf("login success\n");
                 return 1;
             } else {
                 printf("incorrct password\n");
@@ -41,7 +42,8 @@ int Userlist::regist(char *account,char *password)
     return 1;
 }
 
-void Userlist::writeuserfile(void){
+void Userlist::writeuserfile(void)
+{
     FILE *userfile;
 
     mutex.lock();
@@ -53,7 +55,8 @@ void Userlist::writeuserfile(void){
     mutex.unlock();
 }
 
-void Userlist::readuserfile(void){
+void Userlist::readuserfile(void)
+{
     FILE *userfile;
     char tempaccount[15],temppassword[15];
     userfile = fopen("userlist","r");
@@ -66,4 +69,26 @@ void Userlist::readuserfile(void){
         usernum ++;
     }
     fclose(userfile);
+}
+
+void Userlist::loginuser(char *account)
+{
+    mutex.lock();
+    loginnum ++;
+    loginlist.push_back(account);
+    mutex.unlock();
+    for (int i = 0;i < loginnum;i ++) {
+        printf("account %s online\n",loginlist[i].toStdString().c_str());
+    }
+}
+
+void Userlist::logoutuser(char *account)
+{
+    for (int i = 0;i < loginnum;i ++) {
+        if (loginlist[i] == account) {
+            loginlist.remove(i);
+            break;
+        }
+    }
+    loginnum --;
 }

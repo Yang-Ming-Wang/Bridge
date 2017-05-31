@@ -15,6 +15,7 @@ private:
     void recv_client_account(void);
     static Userlist userlist;
     int sockfd;
+    char nowaccount[15];
 };
 
 #endif // WORKERTHREAD_H
