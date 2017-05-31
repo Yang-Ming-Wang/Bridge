@@ -3,7 +3,7 @@
 
 #include <QThread>
 #include <unistd.h>
-#include <QVector>
+#include "userlist.h"
 
 class WorkerThread : public QThread
 {
@@ -13,14 +13,8 @@ protected:
     void run(void);
 private:
     void recv_client_account(void);
-    int login(char *,char *);
-    int regist(char *,char *);
-    void readuserfile(void);
-    void writeuserfile(void);
+    static Userlist userlist;
     int sockfd;
-    static QVector<QString> validaccount;
-    static QVector<QString> validpassword;
-    static int usernum;
 };
 
 #endif // WORKERTHREAD_H
