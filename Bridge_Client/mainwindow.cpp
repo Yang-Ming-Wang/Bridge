@@ -3,7 +3,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    this->setFixedSize(1600,1200);
+    this->setFixedSize(1280,720);
 
     int sockfd;
 

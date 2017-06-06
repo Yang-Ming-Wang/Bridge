@@ -9,12 +9,12 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     logout = new QPushButton(parent);
     logout->setText("Logout");
     logout->setToolTip("Logout from server");
-    logout->setGeometry(400,700,200,100);
+    logout->setGeometry(300,500,200,100);
 
     join = new QPushButton(parent);
     join->setText("Join Game");
     join->setToolTip("Join to the Bridge Game");
-    join->setGeometry(800,700,200,100);
+    join->setGeometry(700,500,200,100);
 
     connect(logout,SIGNAL(clicked()),this,SLOT(logout_from_server()));
 
