@@ -34,8 +34,11 @@ Login::Login(QWidget *parent) : QWidget(parent)
     password->setMaxLength(15);
     password->setValidator(validator);
 
+    QFont font;
+    font.setPointSize(14);
     status = new QLabel(parent);
-    status->setGeometry(300,500,200,100);
+    status->setGeometry(200,300,300,100);
+    status->setFont(font);
 
     sockfd = connect_to_server();
 }
@@ -47,6 +50,7 @@ void Login::login_to_server()
 
     switch (result) {
     case 1:
+        status->setText("");
         hide_everything();
         emit stage_change();
         break;
