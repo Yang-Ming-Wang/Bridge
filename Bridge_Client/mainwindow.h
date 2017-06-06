@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "login.h"
 #include "lobby.h"
+#include "gamestage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,6 +17,7 @@ public:
 private:
     Login *login;
     Lobby *lobby;
+    GameStage *game;
 };
 
 #endif // MAINWINDOW_H

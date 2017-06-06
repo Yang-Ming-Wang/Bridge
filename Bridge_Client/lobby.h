@@ -15,12 +15,14 @@ public:
 
 signals:
     void go_back(void);
+    void play_game(void);
 
 public slots:
     void show_everything(void);
 
 private slots:
     void logout_from_server(void);
+    void join_game(void);
 
 private:
     void hide_everything(void);

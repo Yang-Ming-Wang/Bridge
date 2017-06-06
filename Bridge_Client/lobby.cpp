@@ -17,6 +17,7 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     join->setGeometry(700,500,200,100);
 
     connect(logout,SIGNAL(clicked()),this,SLOT(logout_from_server()));
+    connect(join,SIGNAL(clicked()),this,SLOT(join_game()));
 
     hide_everything();
 }
@@ -48,4 +49,10 @@ void Lobby::logout_from_server(void)
 void Lobby::setsocket(int sock)
 {
     sockfd = sock;
+}
+
+void Lobby::join_game(void)
+{
+    hide_everything();
+    emit play_game();
 }
