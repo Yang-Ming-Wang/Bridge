@@ -45,13 +45,15 @@ void WorkerThread::recv_client_account(void)
 
 void WorkerThread::run(void)
 {
-    int logout;
+    int state;
     do {
         recv_client_account();
-        read(sockfd,&logout,sizeof(int));
-        if (logout == 1) {
+        read(sockfd,&state,sizeof(int));
+        if (state == 0) {
             userlist.logoutuser(nowaccount);
             bzero(nowaccount,15);
+        } else if (state == 1){
+            printf("User play a game\n");
         }
-    } while (logout == 1);
+    } while (state == 0);
 }

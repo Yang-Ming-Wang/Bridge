@@ -12,7 +12,7 @@ int Userlist::login(char *account,char *password)
     for (int i = 0;i < usernum;i ++) {
         if (validaccount[i] == account) {
             if (validpassword[i] == password) {
-        printf("login success\n");
+                printf("login success\n");
                 return 1;
             } else {
                 printf("incorrct password\n");
@@ -78,7 +78,7 @@ void Userlist::loginuser(char *account)
     loginlist.push_back(account);
     mutex.unlock();
     for (int i = 0;i < loginnum;i ++) {
-        printf("account %s online\n",loginlist[i].toStdString().c_str());
+        printf("Account [%s] online\n",loginlist[i].toStdString().c_str());
     }
 }
 
@@ -86,9 +86,13 @@ void Userlist::logoutuser(char *account)
 {
     for (int i = 0;i < loginnum;i ++) {
         if (loginlist[i] == account) {
+            printf("Account [%s] logout\n",account);
+            mutex.lock();
             loginlist.remove(i);
-            break;
+            loginnum --;
+            mutex.unlock();
+            return ;
         }
     }
-    loginnum --;
+    printf("logout user not found\n");
 }

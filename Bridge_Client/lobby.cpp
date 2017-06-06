@@ -39,10 +39,10 @@ void Lobby::show_everything(void)
 
 void Lobby::logout_from_server(void)
 {
-    hide_everything();
+    int state = 0;
 
-    int logout = 1;
-    write(sockfd,&logout,sizeof(int));
+    hide_everything();
+    write(sockfd,&state,sizeof(int));
     emit go_back();
 }
 
@@ -53,6 +53,9 @@ void Lobby::setsocket(int sock)
 
 void Lobby::join_game(void)
 {
+    int state = 1;
+
     hide_everything();
+    write(sockfd,&state,sizeof(int));
     emit play_game();
 }
