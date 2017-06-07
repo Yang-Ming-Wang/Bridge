@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     lobby = new Lobby(this);
     lobby->setsocket(sockfd);
     game = new GameStage(this);
+    game->setsocket(sockfd);
 
     connect(login,SIGNAL(stage_change()),lobby,SLOT(show_everything()));
     connect(lobby,SIGNAL(go_back()),login,SLOT(show_everything()));

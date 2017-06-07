@@ -2,7 +2,7 @@
 
 Server::Server()
 {
-    int i,listenfd,socket[4];
+    int i,listenfd,socket;
     struct sockaddr_in recvaddr;
     socklen_t recv;
 
@@ -12,10 +12,10 @@ Server::Server()
     printf("Server Activated!!\n");
 
     for (i = 0;i < 4;i++) {
-        do socket[i] = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
-        while (socket[i] < 0 && errno == EINTR);
+        do socket = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
+        while (socket < 0 && errno == EINTR);
 
-        worker[i] = new WorkerThread(socket[i]);
+        worker[i] = new WorkerThread(i,socket);
         worker[i]->start();
     }
 }
