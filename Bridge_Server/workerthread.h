@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include "userlist.h"
+#include "table.h"
 
 class WorkerThread : public QThread
 {
@@ -15,8 +16,8 @@ protected:
     void run(void);
 private:
     void recv_client_account(void);
-    void shuffle(int* );
     static Userlist userlist;
+    static Table table;
     int sockfd,clientId;
     char nowaccount[15];
 };
