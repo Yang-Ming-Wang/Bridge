@@ -12,12 +12,12 @@ public:
     int addtable(int);
     int leavetable(int);
     void showtable(void);
-private:
-    QMutex mutex;
-    void shuffle(int *);
     struct player{
         int cardnum,playerid,card[13];
     } seat[4];
+private:
+    QMutex mutex;
+    void shuffle(int *);
     int random[52];
 };
 

@@ -47,7 +47,7 @@ void WorkerThread::recv_client_account(void)
 
 void WorkerThread::run(void)
 {
-    int state;
+    int state,seatposition;
     do {
         recv_client_account();
         read(sockfd,&state,sizeof(int));
@@ -64,9 +64,10 @@ void WorkerThread::run(void)
              * Further, the array must be *static* and use my function
              * 'shuffle' to initial it.
              */
-            table.addtable(clientId + 1);
+            seatposition = table.addtable(clientId + 1);
+            printf("user sit on %d\n",seatposition-1);
             table.showtable();
-            state = 0;
+            write(sockfd,table.seat[seatposition - 1].card,sizeof(int) * 13);
         }
     } while (state == 0);
 }

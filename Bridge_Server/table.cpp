@@ -46,20 +46,20 @@ void Table::restart(void)
 
 int Table::addtable(int id)
 {
-    for (int i = 0;i < 4;i ++){
+    for (int i = 0;i < 4;i ++) {
         if (seat[i].playerid == 0) {
             mutex.lock();
             seat[i].playerid = id;
             mutex.unlock();
-            return i + 1;
-        }
+            return i +1;
+            }
     }
     return 0;
 }
 
 int Table::leavetable(int id)
 {
-    for (int i = 0;i < 4;i ++){
+    for (int i = 0;i < 4;i ++) {
         if (seat[i].playerid == id) {
             mutex.lock();
             seat[i].playerid = 0;
