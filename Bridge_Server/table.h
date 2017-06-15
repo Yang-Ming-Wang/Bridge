@@ -3,6 +3,7 @@
 
 #include <QMutex>
 #include <QTime>
+#include <QWaitCondition>
 
 class Table
 {
@@ -15,10 +16,12 @@ public:
     void gettable(int,int*);
 private:
     QMutex mutex;
+    QWaitCondition ready;
     void shuffle(int *);
     int random[52];
+    int currentPlayer;
     struct player{
-        int cardnum,playerid,card[13];
+        int playerid,card[13];
     } seat[4];
 };
 

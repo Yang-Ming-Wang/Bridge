@@ -56,9 +56,11 @@ void WorkerThread::run(void)
             userlist.logoutuser(nowaccount);
             bzero(nowaccount,15);
         } else if (state == 1){
-            printf("User play a game\n");
+            printf("User [%d] a game\n",clientId);
             table.addtable(clientId);
+            printf("client [%d] add table\n",clientId);
             table.gettable(clientId,card);
+            printf("client [%d] get table\n",clientId);
             write(sockfd,card,sizeof(int) * 13);
         }
     } while (state == 0);
