@@ -14,6 +14,8 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent*) override;
+    void enterEvent(QEvent*) override;
+    void leaveEvent(QEvent*) override;
 
 signals:
     void selected_card(int);
