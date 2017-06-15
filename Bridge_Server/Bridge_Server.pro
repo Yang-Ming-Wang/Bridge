@@ -12,7 +12,8 @@ TEMPLATE = app
 SOURCES += main.cpp \
     server.cpp \
     workerthread.cpp \
-    userlist.cpp
+    userlist.cpp \
+    table.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -27,4 +28,5 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += server.h \
     workerthread.h \
-    userlist.h
+    userlist.h \
+    table.h
