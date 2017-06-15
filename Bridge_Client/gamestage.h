@@ -6,6 +6,7 @@
 #include <QImage>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include "card.h"
 
 class GameStage : public QWidget
 {
@@ -16,9 +17,10 @@ public:
 
 public slots:
     void show_everything(void);
+private slots:
+    void send_card(int);
 private:
-    QLabel *label[13];
-    QImage *img[52];
+    Card *card[13];
     int sockfd;
 };
 

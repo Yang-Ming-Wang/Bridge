@@ -11,12 +11,17 @@ Server::Server()
     recv = sizeof(recvaddr);
     printf("Server Activated!!\n");
 
-    for (i = 0;i < 4;i++) {
+    //Use inifinit loop to prevent Server from terminate.
+    //Note: worker thread current size is 4.
+    i = 0;
+    while(1) {
         do socket = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
         while (socket < 0 && errno == EINTR);
 
         worker[i] = new WorkerThread(i,socket);
         worker[i]->start();
+
+        i++;
     }
 }
 

@@ -54,7 +54,7 @@ void Table::gettable(int clientID,int *arr)
 {
     int i,j;
     mutex.lock();
-    if (currentPlayer != 4)
+    if (currentPlayer < 4)
         ready.wait(&mutex);
     mutex.unlock();
     for (i = 0;i < 4;i++) {

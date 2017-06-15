@@ -28,10 +28,12 @@ SOURCES += \
         mainwindow.cpp \
         login.cpp \
         lobby.cpp \
-        gamestage.cpp
+        gamestage.cpp \
+        card.cpp
 
 HEADERS += \
         mainwindow.h \
         login.h \
         lobby.h \
-        gamestage.h
+        gamestage.h \
+        card.h
