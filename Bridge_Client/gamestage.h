@@ -18,6 +18,7 @@ public slots:
     void show_everything(void);
 private:
     QLabel *label[13];
+    QImage *img[52];
     int sockfd;
 };
 
