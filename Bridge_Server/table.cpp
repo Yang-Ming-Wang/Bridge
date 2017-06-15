@@ -44,17 +44,29 @@ void Table::restart(void)
     }
 }
 
-int Table::addtable(int id)
+void Table::addtable(int id)
 {
     for (int i = 0;i < 4;i ++) {
         if (seat[i].playerid == 0) {
             mutex.lock();
-            seat[i].playerid = id;
+            seat[i].playerid = id + 1;
             mutex.unlock();
-            return i +1;
-            }
+            return ;
+        }
     }
-    return 0;
+}
+
+void Table::gettable(int clientID,int *arr)
+{
+   int i,j;
+   for (i = 0;i < 4;i++) {
+        if (seat[i].playerid == clientID + 1) {
+            for (j = 0;j < 13;j++) {
+                arr[j] = seat[i].card[j];
+            }
+        }
+   }
+    return ;
 }
 
 int Table::leavetable(int id)

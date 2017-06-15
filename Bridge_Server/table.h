@@ -9,16 +9,17 @@ class Table
 public:
     Table();
     void restart(void);
-    int addtable(int);
+    void addtable(int);
     int leavetable(int);
     void showtable(void);
-    struct player{
-        int cardnum,playerid,card[13];
-    } seat[4];
+    void gettable(int,int*);
 private:
     QMutex mutex;
     void shuffle(int *);
     int random[52];
+    struct player{
+        int cardnum,playerid,card[13];
+    } seat[4];
 };
 
 #endif // TABLE_H

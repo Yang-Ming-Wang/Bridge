@@ -47,7 +47,8 @@ void WorkerThread::recv_client_account(void)
 
 void WorkerThread::run(void)
 {
-    int state,seatposition;
+    int state;
+    int card[13];
     do {
         recv_client_account();
         read(sockfd,&state,sizeof(int));
@@ -56,18 +57,9 @@ void WorkerThread::run(void)
             bzero(nowaccount,15);
         } else if (state == 1){
             printf("User play a game\n");
-            /* Modify here !!
-             *
-             * In here, you need to divid array 'random' into four part
-             * , each part will send to diffierent client.The variable
-             * 'clientID' may help you to do this.
-             * Further, the array must be *static* and use my function
-             * 'shuffle' to initial it.
-             */
-            seatposition = table.addtable(clientId + 1);
-            printf("user sit on %d\n",seatposition-1);
-            table.showtable();
-            write(sockfd,table.seat[seatposition - 1].card,sizeof(int) * 13);
+            table.addtable(clientId);
+            table.gettable(clientId,card);
+            write(sockfd,card,sizeof(int) * 13);
         }
     } while (state == 0);
 }
