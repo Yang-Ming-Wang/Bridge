@@ -4,9 +4,6 @@
 #include <QWidget>
 #include <QLabel>
 #include <QImage>
-#include <QMutex>
-#include <QWaitCondition>
-#include <QPushButton>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include "card.h"
@@ -27,8 +24,6 @@ private slots:
 private:
     Card *card[13];
     Card *other;
-    QMutex mutex;
-    QWaitCondition ready;
     ClientThread *thread;
     int sockfd;
 };

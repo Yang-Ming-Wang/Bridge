@@ -10,7 +10,7 @@ class ClientThread : public QThread
 {
     Q_OBJECT
 public:
-    ClientThread(QObject*,QMutex*,QWaitCondition*);
+    ClientThread(QObject*);
     void setsocket(int);
     bool notify(int);
 protected:
@@ -19,8 +19,8 @@ private:
     int sockfd,cardID;
     int otherID;
     int turn;
-    QMutex *mutex;
-    QWaitCondition *ready;
+    QMutex mutex;
+    QWaitCondition ready;
 signals:
     void getcard(int);
 };

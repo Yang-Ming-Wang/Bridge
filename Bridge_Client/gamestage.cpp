@@ -10,7 +10,7 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
 
         connect(card[i],SIGNAL(selected_card(int,int)),this,SLOT(send_card(int,int)));
     }
-    thread = new ClientThread(this,&mutex,&ready);
+    thread = new ClientThread(this);
     connect(thread,SIGNAL(getcard(int)),this,SLOT(show_others(int)));
 
     other = new Card(parent);
