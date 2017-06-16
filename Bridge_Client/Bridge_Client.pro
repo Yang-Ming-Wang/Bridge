@@ -29,11 +29,13 @@ SOURCES += \
         login.cpp \
         lobby.cpp \
         gamestage.cpp \
-        card.cpp
+        card.cpp \
+        clientthread.cpp
 
 HEADERS += \
         mainwindow.h \
         login.h \
         lobby.h \
         gamestage.h \
-        card.h
+        card.h \
+        clientthread.h

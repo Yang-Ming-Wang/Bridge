@@ -10,6 +10,12 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
 
         connect(card[i],SIGNAL(selected_card(int)),this,SLOT(send_card(int)));
     }
+    thread = new ClientThread(this,&mutex,&ready);
+    connect(thread,SIGNAL(getcard(int)),this,SLOT(show_others(int)));
+
+    other = new Card(parent);
+    other->move(100,200);
+    other->hide();
 }
 
 void GameStage::show_everything(void)
@@ -21,14 +27,22 @@ void GameStage::show_everything(void)
         card[i]->show();
         qInfo("recieve [%d] card\n",arr[i]);
     }
+    thread->start();
 }
 
 void GameStage::setsocket(int sock)
 {
     sockfd = sock;
+    thread->setsocket(sock);
 }
 
 void GameStage::send_card(int cardID)
 {
-    qInfo("send [%d] card\n",cardID);
+    thread->notify(cardID);
+}
+
+void GameStage::show_others(int otherID)
+{
+    other->setImage(otherID);
+    other->show();
 }
