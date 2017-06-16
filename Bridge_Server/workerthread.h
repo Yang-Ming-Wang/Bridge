@@ -21,11 +21,9 @@ private:
     void deal_card(void);
     static Userlist userlist;
     static Table table;
+    static int ID;
     int sockfd,clientId;
     char nowaccount[15];
-    static int ID[4];
-    static QMutex mutex;
-    static QWaitCondition cond;
 };
 
 #endif // WORKERTHREAD_H
