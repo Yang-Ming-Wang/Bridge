@@ -18,11 +18,12 @@ protected:
     void run(void);
 private:
     void recv_client_account(void);
+    void deal_card(void);
     static Userlist userlist;
     static Table table;
     int sockfd,clientId;
     char nowaccount[15];
-    static int ID;
+    static int ID[4];
     static QMutex mutex;
     static QWaitCondition cond;
 };
