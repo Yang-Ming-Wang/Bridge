@@ -12,13 +12,12 @@ class ClientThread : public QThread
 public:
     ClientThread(QObject*,QMutex*,QWaitCondition*);
     void setsocket(int);
-    void notify(int);
+    bool notify(int);
 protected:
     void run(void);
 private:
     int sockfd,cardID;
     int otherID;
-    bool card_selected;
     int turn;
     QMutex *mutex;
     QWaitCondition *ready;

@@ -4,11 +4,11 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
 {
     int i;
     for (i = 0; i < 13; i++) {
-        card[i] = new Card(parent);
+        card[i] = new Card(parent,i);
         card[i]->move(100 + 75*i,500);
         card[i]->hide();
 
-        connect(card[i],SIGNAL(selected_card(int)),this,SLOT(send_card(int)));
+        connect(card[i],SIGNAL(selected_card(int,int)),this,SLOT(send_card(int,int)));
     }
     thread = new ClientThread(this,&mutex,&ready);
     connect(thread,SIGNAL(getcard(int)),this,SLOT(show_others(int)));
@@ -35,9 +35,11 @@ void GameStage::setsocket(int sock)
     thread->setsocket(sock);
 }
 
-void GameStage::send_card(int cardID)
+void GameStage::send_card(int cardID,int who)
 {
-    thread->notify(cardID);
+    if (thread->notify(cardID)) {
+        card[who]->hide();
+    }
 }
 
 void GameStage::show_others(int otherID)

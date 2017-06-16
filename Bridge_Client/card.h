@@ -9,7 +9,7 @@ class Card : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Card(QWidget *parent = nullptr);
+    explicit Card(QWidget *parent = nullptr,int idx = 0);
     void setImage(int);
 
 protected:
@@ -18,10 +18,10 @@ protected:
     void leaveEvent(QEvent*) override;
 
 signals:
-    void selected_card(int);
+    void selected_card(int,int);
 private:
     QLabel *label;
-    int cardID;
+    int cardID,index;
 };
 
 #endif // CARD_H

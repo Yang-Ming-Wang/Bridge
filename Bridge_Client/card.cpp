@@ -1,6 +1,6 @@
 #include "card.h"
 
-Card::Card(QWidget *parent) : QWidget(parent)
+Card::Card(QWidget *parent,int idx) : QWidget(parent)
 {
     resize(150,100);
     setAttribute(Qt::WA_Hover,true);
@@ -8,12 +8,12 @@ Card::Card(QWidget *parent) : QWidget(parent)
     label->setScaledContents(true);
     label->resize(150,100);
     cardID = 0;
+    index = idx;
 }
 
 void Card::mousePressEvent(QMouseEvent*)
 {
-    hide();
-    emit selected_card(cardID);
+    emit selected_card(cardID,index);
 }
 
 void Card::enterEvent(QEvent*)

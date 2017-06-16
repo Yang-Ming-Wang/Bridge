@@ -23,7 +23,7 @@ public slots:
     void show_everything(void);
     void show_others(int);
 private slots:
-    void send_card(int);
+    void send_card(int,int);
 private:
     Card *card[13];
     Card *other;

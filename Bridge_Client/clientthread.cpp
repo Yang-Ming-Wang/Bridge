@@ -3,7 +3,6 @@
 
 ClientThread::ClientThread(QObject* parent,QMutex* mut,QWaitCondition* cond): QThread(parent)
 {
-    card_selected = false;
     mutex = mut;
     ready = cond;
 }
@@ -22,13 +21,10 @@ void ClientThread::run(void)
             qInfo("\033[31m your turn\033[0m");
 
             mutex->lock();
-            if (!card_selected) {
-                ready->wait(mutex);
-            }
+            ready->wait(mutex);
             mutex->unlock();
 
             qInfo("you select [\033[31m%d\033[0m]",cardID);
-            card_selected = false;
 
             write(sockfd,&cardID,sizeof(int));
 
@@ -48,8 +44,10 @@ void ClientThread::setsocket(int sock)
     sockfd = sock;
 }
 
-void ClientThread::notify(int ID)
+bool ClientThread::notify(int ID)
 {
+    bool card_selected = false;
+
     mutex->lock();
     if (turn == 0) {
         card_selected = true;
@@ -57,4 +55,6 @@ void ClientThread::notify(int ID)
         ready->wakeAll();
     }
     mutex->unlock();
+
+    return card_selected;
 }
