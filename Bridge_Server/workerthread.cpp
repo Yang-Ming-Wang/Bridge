@@ -2,6 +2,9 @@
 
 Userlist WorkerThread::userlist;
 Table WorkerThread::table;
+int WorkerThread::ID;
+QMutex WorkerThread::mutex;
+QWaitCondition WorkerThread::cond;
 
 WorkerThread::WorkerThread(int id,int sock)
 {
@@ -49,6 +52,7 @@ void WorkerThread::run(void)
 {
     int state;
     int card[13];
+    int order;
     do {
         recv_client_account();
         read(sockfd,&state,sizeof(int));
@@ -62,6 +66,32 @@ void WorkerThread::run(void)
             table.gettable(clientId,card);
             printf("client [%d] get table\n",clientId);
             write(sockfd,card,sizeof(int) * 13);
+
+            //for test
+            order = clientId % 4;
+            write(sockfd,&order,sizeof(int));
+
+            for (int i = 0;i < 4;i++) {
+                if (order == 0) {
+                    //read client ID then give other worker
+                    read(sockfd,&ID,sizeof(int));
+                    printf("clientID %d recv Card = %d\n",clientId,ID);
+
+                    mutex.lock();
+                    cond.wakeAll();
+                    mutex.unlock();
+
+                } else {
+                    //wait other order 0 worker read and write to client
+                    mutex.lock();
+                    cond.wait(&mutex);
+                    mutex.unlock();
+
+                    printf("clientiD %d release lock and send %d\n",clientId,ID);
+                    write(sockfd,&ID,sizeof(int));
+                }
+                order--;
+            }
         }
     } while (state == 0);
 }

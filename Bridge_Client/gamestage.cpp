@@ -25,7 +25,6 @@ void GameStage::show_everything(void)
     for (i = 0; i < 13; i++) {
         card[i]->setImage(arr[i]);
         card[i]->show();
-        qInfo("recieve [%d] card\n",arr[i]);
     }
     thread->start();
 }

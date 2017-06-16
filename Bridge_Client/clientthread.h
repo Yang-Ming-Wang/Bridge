@@ -19,6 +19,7 @@ private:
     int sockfd,cardID;
     int otherID;
     bool card_selected;
+    int turn;
     QMutex *mutex;
     QWaitCondition *ready;
 signals:

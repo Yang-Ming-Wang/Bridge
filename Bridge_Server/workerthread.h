@@ -3,6 +3,8 @@
 
 #include <QThread>
 #include <QTime>
+#include <QMutex>
+#include <QWaitCondition>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include "userlist.h"
@@ -20,6 +22,9 @@ private:
     static Table table;
     int sockfd,clientId;
     char nowaccount[15];
+    static int ID;
+    static QMutex mutex;
+    static QWaitCondition cond;
 };
 
 #endif // WORKERTHREAD_H
