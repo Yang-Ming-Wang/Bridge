@@ -10,7 +10,9 @@ void ClientThread::run(void)
 {
     int i,j,myorder,index;
     //inital get 13 random card
-    //read(sockfd,arr,sizeof(int) * 13);
+    int arr[13];
+    read(sockfd,arr,sizeof(int) * 13);
+    emit game_start(arr);
 
     //need to get turn to decide play card or not
     for (i = 0;i < 13;i++) {

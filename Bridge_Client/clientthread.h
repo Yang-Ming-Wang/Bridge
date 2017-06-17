@@ -24,6 +24,7 @@ private:
 signals:
     void getcard(int,int);
     void your_turn(bool);
+    void game_start(int*);
 };
 
 #endif // CLIENTTHREAD_H

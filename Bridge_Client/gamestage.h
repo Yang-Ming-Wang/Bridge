@@ -16,9 +16,10 @@ public:
     void setsocket(int);
 
 public slots:
-    void show_everything(void);
+    void show_everything(int*);
     void show_others(int,int);
     void your_turn(bool);
+    void game_start(void);
 private slots:
     void send_card(int,int);
 private:
@@ -26,7 +27,6 @@ private:
     Card *other[3];
     ClientThread *thread;
     QLabel *status;
-    int sockfd;
 };
 
 #endif // GAMESTAGE_H
