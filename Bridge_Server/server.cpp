@@ -2,7 +2,7 @@
 
 Server::Server()
 {
-    int i,listenfd,socket;
+    int id,listenfd,socket,clients;
     struct sockaddr_in recvaddr;
     socklen_t recv;
 
@@ -12,16 +12,27 @@ Server::Server()
     printf("Server Activated!!\n");
 
     //Use inifinit loop to prevent Server from terminate.
-    //Note: worker thread current size is 4.
-    i = 0;
+    id = 0;
+    clients = 0;
     while(1) {
-        do socket = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
-        while (socket < 0 && errno == EINTR);
+        if (clients < NUMCLIENT) {
+            do socket = accept(listenfd,(struct sockaddr*)&recvaddr,&recv);
+            while (socket < 0 && errno == EINTR);
 
-        worker[i] = new WorkerThread(i,socket);
-        worker[i]->start();
+            worker.append(new WorkerThread(id,socket));
+            worker.last()->start();
+            clients++;
 
-        i++;
+            QList<WorkerThread*>::iterator element;
+            for (element = worker.begin();element != worker.end();element++) {
+                if ((*element)->isFinished()) {
+                    worker.erase(element);
+                    clients--;
+                }
+            }
+        }
+
+        id++;
     }
 }
 
