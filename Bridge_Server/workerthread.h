@@ -17,7 +17,7 @@ public:
 protected:
     void run(void);
 private:
-    void recv_client_account(void);
+    bool recv_client_account(void);
     void deal_card(void);
     static Userlist userlist;
     static Table table;

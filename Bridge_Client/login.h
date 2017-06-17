@@ -24,6 +24,7 @@ signals:
 private slots:
     void login_to_server(void);
     void register_to_server(void);
+    void quit_game(void);
 private:
     int connect_to_server(void);
     int send_account(int);

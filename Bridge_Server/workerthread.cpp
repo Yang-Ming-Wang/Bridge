@@ -12,13 +12,17 @@ WorkerThread::WorkerThread(int id,int sock)
     sockfd = sock;
 }
 
-void WorkerThread::recv_client_account(void)
+bool WorkerThread::recv_client_account(void)
 {
     int isreg,result;
     char account[15],password[15];
 
     do {
         read(sockfd,&isreg,sizeof(int));
+
+        if (isreg == -1) {
+            return false;
+        }
 
         read(sockfd,account,15);
         printf("your account [%s]\n",account);
@@ -31,11 +35,8 @@ void WorkerThread::recv_client_account(void)
             result = userlist.regist(account,password);
             if (result == 1) {
                 printf("success\n");
-            } else {
-                printf("fail\n");
             }
         } else {
-            printf("login\n");
             result = userlist.login(account,password);
             if (result == 1) {
                 userlist.loginuser(account);
@@ -46,6 +47,7 @@ void WorkerThread::recv_client_account(void)
     } while (isreg == 1 || result != 1);
 
     userlist.writeuserfile();
+    return true;
 }
 
 void WorkerThread::run(void)
@@ -53,7 +55,11 @@ void WorkerThread::run(void)
     int state;
     int card[13];
     do {
-        recv_client_account();
+        if (!recv_client_account()) {
+            printf("client closed\n");
+            close(sockfd);
+            return ;
+        }
         read(sockfd,&state,sizeof(int));
         if (state == 0) {
             userlist.logoutuser(nowaccount);

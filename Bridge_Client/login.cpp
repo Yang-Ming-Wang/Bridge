@@ -6,7 +6,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
     exitbtn = new QPushButton("Exit",parent);
     exitbtn->setGeometry(100,500,200,100);
     exitbtn->setToolTip("Quit the Game");
-    connect(exitbtn,SIGNAL(clicked()),QApplication::instance(),SLOT(quit()));
+    connect(exitbtn,SIGNAL(clicked()),this,SLOT(quit_game()));
 
     loginbtn = new QPushButton("Login",parent);
     loginbtn->setGeometry(500,500,200,100);
@@ -164,4 +164,15 @@ void Login::show_everything(void)
 int Login::getsocket()
 {
     return sockfd;
+}
+
+void Login::quit_game(void)
+{
+    int isreg = -1;
+    qInfo("quit games");
+    if (sockfd >= 0) {
+        write(sockfd,&isreg,sizeof(int));
+        ::close(sockfd);
+    }
+    QApplication::quit();
 }
