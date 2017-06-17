@@ -87,7 +87,7 @@ void WorkerThread::deal_card(void)
         write(sockfd,&order,sizeof(int));
 
         for (j = 0;j < 4;j++) {
-            if (order == 0) {
+            if (j == order) {
                 //read client ID then give other worker
                 read(sockfd,&ID,sizeof(int));
                 table.receive_card(ID);
@@ -105,9 +105,12 @@ void WorkerThread::deal_card(void)
                 printf("clientiD %d release lock and send %d\n",clientId,ID);
                 write(sockfd,&ID,sizeof(int));
             }
-            order--;
         }
-        table.setOrder();
+        table.setOrder(i);
     }
+
+    i = table.final_result(clientId);
+    write(sockfd,&i,sizeof(int));
+
     return ;
 }

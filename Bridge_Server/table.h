@@ -14,15 +14,17 @@ public:
     int leavetable(int);
     void showtable(void);
     void gettable(int,int*);
-    void setOrder(void);
+    void setOrder(int);
     int getOrder(int);
     void receive_card(int);
+    int final_result(int);
 private:
     int getIndexbyClientID(int);
     QMutex mutex;
     QWaitCondition ready;
     void shuffle(int *);
     int random[52];
+    int result[13];
     int currentPlayer;
     int turn;
     struct player{

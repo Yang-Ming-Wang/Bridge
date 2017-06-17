@@ -45,7 +45,12 @@ void ClientThread::run(void)
             }
         }
     }
-    qInfo("thread leave a loop");
+    read(sockfd,&i,sizeof(int));
+    if (i == 1) {
+        qInfo("win the game");
+    } else {
+        qInfo("lose the game");
+    }
 }
 
 void ClientThread::setsocket(int sock)

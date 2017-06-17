@@ -97,7 +97,7 @@ void Table::showtable(void)
     }
 }
 
-void Table::setOrder(void)
+void Table::setOrder(int round)
 {
     int i,index,color,diff,max,winner;
     for (index = 0; index < 4 && seat[index].order != 0;index++);
@@ -117,6 +117,7 @@ void Table::setOrder(void)
 
         index = winner;
         turn = winner;
+        result[round] = winner;
         for (i = 0;i < 4;i++) {
             seat[index].order = i;
             printf("client %d order %d\n",seat[index].playerid,seat[index].order);
@@ -149,4 +150,25 @@ int Table::getIndexbyClientID(int clientID)
         return i;
     }
     return -1;
+}
+
+int Table::final_result(int clientID)
+{
+    int i,teamA,teamB;
+    teamA = 0;
+    teamB = 0;
+    for (i = 0;i < 13;i++) {
+       if (result[i] % 2 == 0) {
+           teamA++;
+       } else {
+           teamB++;
+       }
+    }
+    i = getIndexbyClientID(clientID);
+    if (teamA > teamB && i % 2 == 0) {
+        return 1;
+    } else if (teamB > teamA && i % 2 != 0){
+        return 1;
+    }
+    return 0;
 }
