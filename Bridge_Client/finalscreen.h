@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QImage>
 #include <QPushButton>
 
 class FinalScreen : public QWidget

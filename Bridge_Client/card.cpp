@@ -34,7 +34,7 @@ void Card::leaveEvent(QEvent*)
 
 void Card::setImage(int id)
 {
-    QImage img("poker/" + QString::number(id) + ".jpg");
+    QImage img("image/" + QString::number(id) + ".jpg");
     label->setPixmap(QPixmap::fromImage(img));
     cardID = id;
 }
