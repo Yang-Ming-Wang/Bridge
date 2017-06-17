@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(lobby,SIGNAL(go_back()),login,SLOT(show_everything()));
     connect(lobby,SIGNAL(play_game()),game,SLOT(game_start()));
     connect(game,SIGNAL(goto_final(int)),final,SLOT(show_everything(int)));
+    connect(final,SIGNAL(back_to_lobby()),lobby,SLOT(show_everything()));
 }
 
 MainWindow::~MainWindow()

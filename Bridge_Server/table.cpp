@@ -39,19 +39,19 @@ void Table::restart(void)
 
 void Table::addtable(int id)
 {
-    for (int i = 0;i < 4;i ++) {
-        if (seat[i].playerid == -1) {
-            mutex.lock();
-            seat[i].playerid = id;
-            seat[i].order = currentPlayer;
-            currentPlayer++;
-            if (currentPlayer == 4) {
-                ready.wakeAll();
-            }
-            mutex.unlock();
-            return ;
+    int index;
+    mutex.lock();
+    if ((index = getIndexbyClientID(-1)) != -1) {
+        seat[index].playerid = id;
+        seat[index].order = currentPlayer;
+        currentPlayer++;
+        if (currentPlayer == 4) {
+            ready.wakeAll();
         }
+    } else {
+        printf("can't add table\n");
     }
+    mutex.unlock();
 }
 
 void Table::gettable(int clientID,int *arr)
@@ -72,18 +72,18 @@ void Table::gettable(int clientID,int *arr)
     return ;
 }
 
-int Table::leavetable(int id)
+void Table::leavetable(int clientID)
 {
-    for (int i = 0;i < 4;i ++) {
-        if (seat[i].playerid == id) {
-            mutex.lock();
-            seat[i].playerid = -1;
-            currentPlayer--;
-            mutex.unlock();
-            return i + 1;
-        }
+    int index;
+    if ((index = getIndexbyClientID(clientID)) != -1) {
+        mutex.lock();
+        seat[index].playerid = -1;
+        currentPlayer--;
+        mutex.unlock();
+        turn = 0;
+        return ;
     }
-    return 0;
+    printf("table doesn't contain this id\n");
 }
 
 void Table::showtable(void)

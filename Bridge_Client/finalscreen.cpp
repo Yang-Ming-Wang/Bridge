@@ -2,17 +2,19 @@
 
 FinalScreen::FinalScreen(QWidget *parent) : QWidget(parent)
 {
-    back = new QPushButton(parent);
-    //connect()
+    back = new QPushButton("Back",parent);
+    back->setGeometry(500,500,200,100);
+    back->hide();
+    connect(back,SIGNAL(clicked()),this,SLOT(hide_everything()));
 
     QFont font;
     font.setPointSize(14);
 
     label = new QLabel(parent);
-    label->setGeometry(200,300,300,100);
+    label->setGeometry(500,300,300,100);
     label->setFont(font);
+    label->hide();
 
-    hide_everything();
 }
 
 void FinalScreen::show_everything(int win)

@@ -15,8 +15,9 @@ signals:
     void back_to_lobby(void);
 public slots:
     void show_everything(int);
-private:
+private slots:
     void hide_everything(void);
+private:
     QLabel *label;
     QPushButton *back;
 };

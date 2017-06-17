@@ -36,6 +36,7 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     status = new QLabel(parent);
     status->setGeometry(500,250,300,100);
     status->setFont(font);
+    status->hide();
 }
 
 void GameStage::show_everything(int* arr)
@@ -45,7 +46,6 @@ void GameStage::show_everything(int* arr)
         card[i]->setImage(arr[i]);
         card[i]->show();
     }
-    status->show();
 }
 
 void GameStage::setsocket(int sock)
@@ -90,6 +90,7 @@ void GameStage::game_start(void)
 {
     status->setStyleSheet("QLabel {}");
     status->setText("Wait others to join");
+    status->show();
     thread->start();
 }
 

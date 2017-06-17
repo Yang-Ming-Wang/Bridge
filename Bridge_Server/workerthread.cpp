@@ -52,18 +52,21 @@ bool WorkerThread::recv_client_account(void)
 
 void WorkerThread::run(void)
 {
-    int state;
+    int state = -1;
     int card[13];
-    do {
-        if (!recv_client_account()) {
+    while(1) {
+        if (state == -1 && !recv_client_account()) {
             printf("client closed\n");
             close(sockfd);
             return ;
         }
+
         read(sockfd,&state,sizeof(int));
+
         if (state == 0) {
             userlist.logoutuser(nowaccount);
             bzero(nowaccount,15);
+            state = -1;
         } else if (state == 1){
             printf("User [%d] a game\n",clientId);
             table.addtable(clientId);
@@ -74,8 +77,11 @@ void WorkerThread::run(void)
 
             deal_card();
 
+            table.leavetable(clientId);
+
+            state = 0;
         }
-    } while (state == 0);
+    }
 }
 
 void WorkerThread::deal_card(void)

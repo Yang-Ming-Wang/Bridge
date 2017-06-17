@@ -11,7 +11,7 @@ public:
     Table();
     void restart(void);
     void addtable(int);
-    int leavetable(int);
+    void leavetable(int);
     void showtable(void);
     void gettable(int,int*);
     void setOrder(int);
