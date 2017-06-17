@@ -8,34 +8,39 @@ ClientThread::ClientThread(QObject* parent): QThread(parent)
 
 void ClientThread::run(void)
 {
-    int i,j;
+    int i,j,myorder,index;
     //inital get 13 random card
     //read(sockfd,arr,sizeof(int) * 13);
 
     //need to get turn to decide play card or not
     for (i = 0;i < 13;i++) {
-        read(sockfd,&turn,sizeof(int));
-        qInfo("TURN::[%d]",turn);
+        read(sockfd,&myorder,sizeof(int));
+        index = 0;
         for (j = 0;j < 4;j++) {
-            emit change_turn(turn);
-            if (turn == 0) {
-                qInfo("\033[31m your turn\033[0m");
+            if (j == myorder) {
+                isMyturn = true;
+                emit your_turn(isMyturn);
 
                 mutex.lock();
                 ready.wait(&mutex);
                 mutex.unlock();
 
                 qInfo("you select [\033[31m%d\033[0m]",cardID);
+                emit getcard(cardID,-1);
 
                 write(sockfd,&cardID,sizeof(int));
 
             } else {
+                isMyturn = false;
+                emit your_turn(isMyturn);
+
                 qInfo("\033[31m wait for read \033[0m");
                 read(sockfd,&otherID,sizeof(int));
                 qInfo("recv card[\033[31m%d\033[0m]",otherID);
-                emit getcard(otherID);
+
+                emit getcard(otherID,index);
+                index++;
             }
-            turn--;
         }
     }
     qInfo("thread leave a loop");
@@ -51,7 +56,7 @@ bool ClientThread::notify(int ID)
     bool card_selected = false;
 
     mutex.lock();
-    if (turn == 0) {
+    if (isMyturn) {
         card_selected = true;
         cardID = ID;
         ready.wakeAll();

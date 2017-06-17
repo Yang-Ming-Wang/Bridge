@@ -18,12 +18,12 @@ protected:
 private:
     int sockfd,cardID;
     int otherID;
-    int turn;
+    bool isMyturn;
     QMutex mutex;
     QWaitCondition ready;
 signals:
-    void getcard(int);
-    void change_turn(int);
+    void getcard(int,int);
+    void your_turn(bool);
 };
 
 #endif // CLIENTTHREAD_H

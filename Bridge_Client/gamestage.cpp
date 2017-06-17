@@ -11,18 +11,29 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
         connect(card[i],SIGNAL(selected_card(int,int)),this,SLOT(send_card(int,int)));
     }
     thread = new ClientThread(this);
-    connect(thread,SIGNAL(getcard(int)),this,SLOT(show_others(int)));
+    connect(thread,SIGNAL(getcard(int,int)),this,SLOT(show_others(int,int)));
+    connect(thread,SIGNAL(your_turn(bool)),this,SLOT(your_turn(bool)));
 
-    other = new Card(parent);
-    other->move(100,200);
-    other->hide();
+    other[0] = new Card(parent);
+    other[0]->setClick(false);
+    other[0]->move(100,230);
+    other[0]->hide();
+
+    other[1] = new Card(parent);
+    other[1]->setClick(false);
+    other[1]->move(500,50);
+    other[1]->hide();
+
+    other[2] = new Card(parent);
+    other[2]->setClick(false);
+    other[2]->move(1000,230);
+    other[2]->hide();
 
     QFont font;
     font.setPointSize(14);
     status = new QLabel(parent);
     status->setGeometry(500,250,300,100);
     status->setFont(font);
-    connect(thread,SIGNAL(change_turn(int)),this,SLOT(change_turn(int)));
 }
 
 void GameStage::show_everything(void)
@@ -53,15 +64,17 @@ void GameStage::send_card(int cardID,int who)
     }
 }
 
-void GameStage::show_others(int otherID)
+void GameStage::show_others(int otherID,int index)
 {
-    other->setImage(otherID);
-    other->show();
+    if (index != -1) {
+        other[index]->setImage(otherID);
+        other[index]->show();
+    }
 }
 
-void GameStage::change_turn(int turn)
+void GameStage::your_turn(bool flag)
 {
-    if (turn == 0) {
+    if (flag) {
         status->setStyleSheet("QLabel {color:green}");
         status->setText("Your Turn");
     } else {

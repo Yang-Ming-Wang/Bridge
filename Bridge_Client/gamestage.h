@@ -17,13 +17,13 @@ public:
 
 public slots:
     void show_everything(void);
-    void show_others(int);
-    void change_turn(int);
+    void show_others(int,int);
+    void your_turn(bool);
 private slots:
     void send_card(int,int);
 private:
     Card *card[13];
-    Card *other;
+    Card *other[3];
     ClientThread *thread;
     QLabel *status;
     int sockfd;

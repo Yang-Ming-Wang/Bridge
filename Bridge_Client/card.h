@@ -11,6 +11,7 @@ class Card : public QWidget
 public:
     explicit Card(QWidget *parent = nullptr,int idx = 0);
     void setImage(int);
+    void setClick(bool);
 
 protected:
     void mousePressEvent(QMouseEvent*) override;
@@ -22,6 +23,7 @@ signals:
 private:
     QLabel *label;
     int cardID,index;
+    bool clickable;
 };
 
 #endif // CARD_H
