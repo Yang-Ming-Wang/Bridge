@@ -46,11 +46,7 @@ void ClientThread::run(void)
         }
     }
     read(sockfd,&i,sizeof(int));
-    if (i == 1) {
-        qInfo("win the game");
-    } else {
-        qInfo("lose the game");
-    }
+    emit result(i);
 }
 
 void ClientThread::setsocket(int sock)

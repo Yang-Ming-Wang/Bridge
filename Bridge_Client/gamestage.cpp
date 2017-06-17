@@ -14,6 +14,7 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     connect(thread,SIGNAL(getcard(int,int)),this,SLOT(show_others(int,int)));
     connect(thread,SIGNAL(your_turn(bool)),this,SLOT(your_turn(bool)));
     connect(thread,SIGNAL(game_start(int*)),this,SLOT(show_everything(int*)));
+    connect(thread,SIGNAL(result(int)),this,SLOT(hide_everything(int)));
 
     other[0] = new Card(parent);
     other[0]->setClick(false);
@@ -90,4 +91,14 @@ void GameStage::game_start(void)
     status->setStyleSheet("QLabel {}");
     status->setText("Wait others to join");
     thread->start();
+}
+
+void GameStage::hide_everything(int result)
+{
+    int i;
+    status->hide();
+    for (i = 0;i < 3;i++) {
+        other[i]->hide();
+    }
+    emit goto_final(result);
 }

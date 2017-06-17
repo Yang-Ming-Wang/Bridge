@@ -25,6 +25,7 @@ signals:
     void getcard(int,int);
     void your_turn(bool);
     void game_start(int*);
+    void result(int);
 };
 
 #endif // CLIENTTHREAD_H

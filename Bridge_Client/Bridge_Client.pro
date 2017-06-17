@@ -30,7 +30,8 @@ SOURCES += \
         lobby.cpp \
         gamestage.cpp \
         card.cpp \
-        clientthread.cpp
+        clientthread.cpp \
+        finalscreen.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,4 +39,5 @@ HEADERS += \
         lobby.h \
         gamestage.h \
         card.h \
-        clientthread.h
+        clientthread.h \
+        finalscreen.h

@@ -15,8 +15,11 @@ public:
     explicit GameStage(QWidget *parent = nullptr);
     void setsocket(int);
 
+signals:
+    void goto_final(int);
 public slots:
     void show_everything(int*);
+    void hide_everything(int);
     void show_others(int,int);
     void your_turn(bool);
     void game_start(void);
