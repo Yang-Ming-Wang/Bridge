@@ -23,6 +23,7 @@ private:
     QWaitCondition ready;
 signals:
     void getcard(int);
+    void change_turn(int);
 };
 
 #endif // CLIENTTHREAD_H

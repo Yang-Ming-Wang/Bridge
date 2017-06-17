@@ -16,6 +16,13 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     other = new Card(parent);
     other->move(100,200);
     other->hide();
+
+    QFont font;
+    font.setPointSize(14);
+    status = new QLabel(parent);
+    status->setGeometry(500,250,300,100);
+    status->setFont(font);
+    connect(thread,SIGNAL(change_turn(int)),this,SLOT(change_turn(int)));
 }
 
 void GameStage::show_everything(void)
@@ -26,6 +33,7 @@ void GameStage::show_everything(void)
         card[i]->setImage(arr[i]);
         card[i]->show();
     }
+    status->show();
     thread->start();
 }
 
@@ -39,6 +47,9 @@ void GameStage::send_card(int cardID,int who)
 {
     if (thread->notify(cardID)) {
         card[who]->hide();
+    } else {
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("It's not your turn!!");
     }
 }
 
@@ -46,4 +57,15 @@ void GameStage::show_others(int otherID)
 {
     other->setImage(otherID);
     other->show();
+}
+
+void GameStage::change_turn(int turn)
+{
+    if (turn == 0) {
+        status->setStyleSheet("QLabel {color:green}");
+        status->setText("Your Turn");
+    } else {
+        status->setStyleSheet("QLabel {}");
+        status->setText("Wait for others");
+    }
 }

@@ -17,6 +17,7 @@ void ClientThread::run(void)
         read(sockfd,&turn,sizeof(int));
         qInfo("TURN::[%d]",turn);
         for (j = 0;j < 4;j++) {
+            emit change_turn(turn);
             if (turn == 0) {
                 qInfo("\033[31m your turn\033[0m");
 
