@@ -15,7 +15,7 @@ WorkerThread::WorkerThread(int id,int sock)
 bool WorkerThread::recv_client_account(void)
 {
     int isreg,result;
-    char account[15],password[15];
+    char password[15];
 
     do {
         read(sockfd,&isreg,sizeof(int));
@@ -41,16 +41,29 @@ bool WorkerThread::recv_client_account(void)
         } else {
             printf("login:\n");
             result = userlist.login(account,password);
-            if (result == 1) {
+
+            switch (result) {
+            case 1:
                 printf("login success\n");
-            } else if (result == 2) {
+                break;
+            case 2:
                 printf("account not exist\n");
-            } else if (result == 3) {
+                break;
+            case 3:
                 printf("incorrct password\n");
+                break;
+            case 4:
+                printf("already login\n");
+                break;
             }
         }
         write(sockfd,&result,sizeof(int));
     } while (isreg == 1 || result != 1);
+
+    /*
+     * send client data after login
+     *
+     */
 
     return true;
 }
@@ -69,7 +82,7 @@ void WorkerThread::run(void)
         read(sockfd,&state,sizeof(int));
 
         if (state == 0) {
-            //logout
+            userlist.logout(account);
             state = -1;
         } else if (state == 1){
             printf("User [%d] a game\n",clientId);

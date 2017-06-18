@@ -2,6 +2,12 @@
 #define USERLIST_H
 
 #include <QtSql>
+#include <QMap>
+#include <QMutex>
+
+typedef struct _clientData {
+   int win,lose;
+} clientData;
 
 class Userlist
 {
@@ -9,11 +15,12 @@ public:
     Userlist();
     int login(char *,char *);
     int regist(char *,char *);
+    void logout(char *);
 private:
     QSqlDatabase db;
-    void readuserfile(void);
+    QMap<QString,clientData> map;
+    QMutex mutex;
     int loginnum;
-    int usernum;
 };
 
 #endif // USERLIST_H

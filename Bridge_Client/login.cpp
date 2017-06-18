@@ -61,6 +61,10 @@ void Login::login_to_server()
         status->setStyleSheet("QLabel {color:red}");
         status->setText("Password Incorrect!!");
         break;
+    case 4:
+        status->setStyleSheet("QLabel {color:red}");
+        status->setText("Already login!!");
+        break;
     default:
         status->setStyleSheet("QLabel {color:red}");
         status->setText("Socket error!!");

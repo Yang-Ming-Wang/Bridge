@@ -23,6 +23,7 @@ private:
     static Table table;
     static int ID;
     int sockfd,clientId;
+    char account[15];
 };
 
 #endif // WORKERTHREAD_H
