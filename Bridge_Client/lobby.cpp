@@ -30,7 +30,7 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     for (i = 0;i < 8;i++) {
         user[i] = new QLabel(parent);
         user[i]->setText("");
-        user[i]->setGeometry(300,50 + 50*i,260,50);
+        user[i]->setGeometry(300,50 + 50*i,360,50);
         user[i]->setStyleSheet("QLabel {color:green}");
         user[i]->setFont(font);
     }
@@ -107,10 +107,11 @@ void Lobby::get_online_info()
 
     for (i = 0;i < loginnum;i++) {
         read(sockfd,account,sizeof(char) * 15);
-        user[i]->setText(account);
         read(sockfd,&win,sizeof(int));
         read(sockfd,&lose,sizeof(int));
-        qInfo("win = %d , lose = %d",win,lose);
+        QString str(QString::fromLatin1(account) + "  " \
+                    + QString::number(win) + "  " + QString::number(lose));
+        user[i]->setText(str);
     }
 }
 
