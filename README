@@ -1,5 +1,9 @@
 Bridge Game
 
 Need four player to play this game.
-Please put 'image' folder and Bridge_Client
-into same directory.
+
+[Gaming Note]
+1.Please put 'image' folder and Bridge_Client into
+same directory.
+2.You need to install SQLite in order to execute
+correctly.
