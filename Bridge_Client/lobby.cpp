@@ -2,9 +2,14 @@
 
 Lobby::Lobby(QWidget *parent) : QWidget(parent)
 {
+    QFont font;
+    font.setPointSize(14);
+
     label = new QLabel(parent);
     label->setText("In Lobby");
-    label->setGeometry(300,300,200,100);
+    label->setGeometry(80,50,150,50);
+    label->setAlignment(Qt::AlignCenter);
+    label->setFont(font);
 
     logout = new QPushButton(parent);
     logout->setText("Logout");
@@ -25,8 +30,9 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     for (i = 0;i < 8;i++) {
         user[i] = new QLabel(parent);
         user[i]->setText("");
-        user[i]->setGeometry(600,100 + 50*i,100,50);
-        user[i]->hide();
+        user[i]->setGeometry(300,50 + 50*i,260,50);
+        user[i]->setStyleSheet("QLabel {color:green}");
+        user[i]->setFont(font);
     }
 
     connect(logout,SIGNAL(clicked()),this,SLOT(logout_from_server()));
