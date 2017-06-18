@@ -22,15 +22,15 @@ MainWindow::~MainWindow()
 
 }
 
-void MainWindow::connectIP(QString str)
+bool MainWindow::connectIP(QString str)
 {
     int sockfd;
     struct sockaddr_in servaddr;
     char *connect_ip = str.toLatin1().data();
 
     if ((sockfd = socket(AF_INET,SOCK_STREAM,0)) < 0 ) {
-        qDebug("socket error");
-        QApplication::quit();
+        printf("socket error\n");
+        return false;
     }
 
     bzero(&servaddr,sizeof(servaddr));
@@ -42,10 +42,11 @@ void MainWindow::connectIP(QString str)
         printf("inet_ption error for %s\n",connect_ip);
 
     if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0) {
-        qDebug("connect error");
-        QApplication::quit();
+        printf("connect error\n");
+        return false;
     }
     login->setsocket(sockfd);
     lobby->setsocket(sockfd);
     game->setsocket(sockfd);
+    return true;
 }

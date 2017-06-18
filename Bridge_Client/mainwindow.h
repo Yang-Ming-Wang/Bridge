@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void connectIP(QString str);
+    bool connectIP(QString str);
     ~MainWindow();
 
 private:

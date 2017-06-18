@@ -5,11 +5,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    bool success;
 
     if (QCoreApplication::arguments().size() == 2) {
-        w.connectIP(QCoreApplication::arguments().at(1));
+        success = w.connectIP(QCoreApplication::arguments().at(1));
     } else {
-        w.connectIP(QString("127.0.0.1"));
+        success = w.connectIP(QString("127.0.0.1"));
+    }
+    if (!success) {
+        return -1;
     }
     w.show();
 
