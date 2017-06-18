@@ -99,30 +99,28 @@ void Table::showtable(void)
 
 void Table::setOrder(int round)
 {
-    int i,index,color,diff,max,winner;
-    for (index = 0; index < 4 && seat[index].order != 0;index++);
-    if (index < 4) {
-        color = seat[index].sendcard/13*13;
-        max = 0;
-        for (i = 0;i < 4;i++) {
-            index = (index + 1) % 4;
-            diff = seat[index].sendcard - color;
-            if (diff < 13 && diff > max) {
-                max = diff;
-                winner = index;
-            }
-        }
+    int i,color,diff,max,winner;
 
-        printf("winner [%d] use card [%d] to win!!\n",winner,seat[winner].sendcard);
+    //seat[i] must has one element order == 0
+    for (i = 0;seat[i].order != 0;i++);
 
-        index = winner;
-        turn = winner;
-        result[round] = winner;
-        for (i = 0;i < 4;i++) {
-            seat[index].order = i;
-            printf("client %d order %d\n",seat[index].playerid,seat[index].order);
-            index = (index + 1) % 4;
+    color = seat[i].sendcard/13*13;
+    max = 0;
+    for (i = 0;i < 4;i++) {
+        diff = seat[i].sendcard - color;
+        if (diff < 13 && diff >= max) {
+            max = diff;
+            winner = i;
         }
+    }
+
+    printf("winner [%d] use card [%d] to win!!\n",winner,seat[winner].sendcard);
+
+    turn = winner;
+    result[round] = winner;
+    for (i = 0;i < 4;i++) {
+        seat[i].order = (i - winner) % 4;
+        printf("client %d order %d\n",seat[i].playerid,seat[i].order);
     }
 }
 
