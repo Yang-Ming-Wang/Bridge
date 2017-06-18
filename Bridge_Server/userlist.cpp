@@ -76,11 +76,15 @@ void Userlist::logout(char *account)
 void Userlist::send_online_info(int sockfd)
 {
     char account[15];
+    clientData data;
     write(sockfd,&loginnum,sizeof(int));
     QMap<QString, clientData>::iterator i;
     for (i = map.begin(); i != map.end(); i++) {
         strcpy(account,i.key().toLatin1().data());
         write(sockfd,account,sizeof(char) * 15);
+        data = i.value();
+        write(sockfd,&data.win,sizeof(int));
+        write(sockfd,&data.lose,sizeof(int));
     }
 }
 

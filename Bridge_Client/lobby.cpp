@@ -96,7 +96,7 @@ void Lobby::join_game(void)
 
 void Lobby::get_online_info()
 {
-    int i,loginnum;
+    int i,loginnum,win,lose;
     char account[15];
 
     for (i = 0;i < 8;i++) {
@@ -108,6 +108,9 @@ void Lobby::get_online_info()
     for (i = 0;i < loginnum;i++) {
         read(sockfd,account,sizeof(char) * 15);
         user[i]->setText(account);
+        read(sockfd,&win,sizeof(int));
+        read(sockfd,&lose,sizeof(int));
+        qInfo("win = %d , lose = %d",win,lose);
     }
 }
 
