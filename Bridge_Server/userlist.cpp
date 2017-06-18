@@ -28,13 +28,12 @@ int Userlist::login(char *account,char *password)
     QSqlQuery query;
     clientData data;
     int result;
-    query.prepare("SELECT password,numOfwins,numOflose FROM Users WHERE account=:account");
+    query.prepare("SELECT password FROM Users WHERE account=:account");
     query.bindValue(":account",account);
     query.exec();
     if (query.next()) {
         if (query.value(0).toString() == password) {
-            data.win = query.value(1).toInt();
-            data.lose = query.value(2).toInt();
+            data = get_user_score(account);
             mutex.lock();
             if (!map.contains(QString(account))) {
                 map[QString(account)] = data;
@@ -83,4 +82,40 @@ void Userlist::send_online_info(int sockfd)
         strcpy(account,i.key().toLatin1().data());
         write(sockfd,account,sizeof(char) * 15);
     }
+}
+
+void Userlist::write_result(char *account, int result)
+{
+    QSqlQuery query;
+    clientData data;
+    data = get_user_score(account);
+
+    if (result == 1) {
+        data.win++;
+    } else {
+        data.lose++;
+    }
+
+    map[QString(account)] = data;
+
+    query.prepare("UPDATE Users SET numOfwins =:win, numOflose =:lose WHERE account=:account");
+    query.bindValue(":win",data.win);
+    query.bindValue(":lose",data.lose);
+    query.bindValue(":account",account);
+    query.exec();
+}
+clientData Userlist::get_user_score(char *account)
+{
+    QSqlQuery query;
+    clientData data;
+
+    query.prepare("SELECT numOfwins,numOflose FROM Users WHERE account=:account");
+    query.bindValue(":account",account);
+    query.exec();
+
+    query.next();
+    data.win = query.value(0).toInt();
+    data.lose = query.value(1).toInt();
+
+    return data;
 }

@@ -18,7 +18,9 @@ public:
     int regist(char *,char *);
     void logout(char *);
     void send_online_info(int);
+    void write_result(char *,int);
 private:
+    clientData get_user_score(char *);
     QSqlDatabase db;
     QMap<QString,clientData> map;
     QMutex mutex;

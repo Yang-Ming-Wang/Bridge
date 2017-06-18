@@ -130,6 +130,7 @@ void WorkerThread::deal_card(void)
     }
 
     i = table.final_result(clientId);
+    userlist.write_result(account,i);
     write(sockfd,&i,sizeof(int));
 
     return ;
