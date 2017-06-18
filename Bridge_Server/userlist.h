@@ -4,6 +4,7 @@
 #include <QtSql>
 #include <QMap>
 #include <QMutex>
+#include <unistd.h>
 
 typedef struct _clientData {
    int win,lose;
@@ -16,7 +17,7 @@ public:
     int login(char *,char *);
     int regist(char *,char *);
     void logout(char *);
-    int getLoginNum(void);
+    void send_online_info(int);
 private:
     QSqlDatabase db;
     QMap<QString,clientData> map;

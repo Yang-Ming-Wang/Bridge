@@ -65,24 +65,21 @@ bool WorkerThread::recv_client_account(void)
 
 void WorkerThread::run(void)
 {
-    int state = -1;
+    int state = 0;
     int card[13];
-    int loginnum;
     while(1) {
-        if (state == -1 && !recv_client_account()) {
+        if (state == 0 && !recv_client_account()) {
             printf("client closed\n");
             close(sockfd);
             return ;
         }
         //write login num.
-        loginnum = userlist.getLoginNum();
-        write(sockfd,&loginnum,sizeof(int));
+        userlist.send_online_info(sockfd);
 
         read(sockfd,&state,sizeof(int));
 
         if (state == 0) {
             userlist.logout(account);
-            state = -1;
         } else if (state == 1){
             printf("User [%d] a game\n",clientId);
             table.addtable(clientId);
@@ -94,8 +91,6 @@ void WorkerThread::run(void)
             deal_card();
 
             table.leavetable(clientId);
-
-            state = 0;
         } else if (state == 2) {
             //Do nothing.
             //just loop and send loginnum

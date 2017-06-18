@@ -74,7 +74,13 @@ void Userlist::logout(char *account)
     mutex.unlock();
 }
 
-int Userlist::getLoginNum(void)
+void Userlist::send_online_info(int sockfd)
 {
-    return loginnum;
+    char account[15];
+    write(sockfd,&loginnum,sizeof(int));
+    QMap<QString, clientData>::iterator i;
+    for (i = map.begin(); i != map.end(); i++) {
+        strcpy(account,i.key().toLatin1().data());
+        write(sockfd,account,sizeof(char) * 15);
+    }
 }

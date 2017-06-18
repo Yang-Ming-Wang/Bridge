@@ -23,12 +23,14 @@ public slots:
 private slots:
     void logout_from_server(void);
     void join_game(void);
-    void get_online_info(void);
+    void refresh_data(void);
 
 private:
     void hide_everything(void);
+    void get_online_info(void);
     int sockfd;
     QLabel *label;
+    QLabel *user[8];
     QPushButton *logout,*join,*refresh;
 };
 
