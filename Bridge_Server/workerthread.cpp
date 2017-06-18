@@ -31,22 +31,27 @@ bool WorkerThread::recv_client_account(void)
         printf("your password [%s]\n",password);
 
         if (isreg == 1) {
-            printf("registor ");
+            printf("registor:\n");
             result = userlist.regist(account,password);
             if (result == 1) {
-                printf("success\n");
+                printf("registor success\n");
+            } else if (result == 2) {
+                printf("can't create existing account\n");
             }
         } else {
+            printf("login:\n");
             result = userlist.login(account,password);
             if (result == 1) {
-                userlist.loginuser(account);
-                strcpy(nowaccount,account);
+                printf("login success\n");
+            } else if (result == 2) {
+                printf("account not exist\n");
+            } else if (result == 3) {
+                printf("incorrct password\n");
             }
         }
         write(sockfd,&result,sizeof(int));
     } while (isreg == 1 || result != 1);
 
-    userlist.writeuserfile();
     return true;
 }
 
@@ -64,8 +69,7 @@ void WorkerThread::run(void)
         read(sockfd,&state,sizeof(int));
 
         if (state == 0) {
-            userlist.logoutuser(nowaccount);
-            bzero(nowaccount,15);
+            //logout
             state = -1;
         } else if (state == 1){
             printf("User [%d] a game\n",clientId);
