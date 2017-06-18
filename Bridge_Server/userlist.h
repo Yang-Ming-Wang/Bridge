@@ -16,6 +16,7 @@ public:
     int login(char *,char *);
     int regist(char *,char *);
     void logout(char *);
+    int getLoginNum(void);
 private:
     QSqlDatabase db;
     QMap<QString,clientData> map;

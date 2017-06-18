@@ -60,11 +60,6 @@ bool WorkerThread::recv_client_account(void)
         write(sockfd,&result,sizeof(int));
     } while (isreg == 1 || result != 1);
 
-    /*
-     * send client data after login
-     *
-     */
-
     return true;
 }
 
@@ -72,12 +67,16 @@ void WorkerThread::run(void)
 {
     int state = -1;
     int card[13];
+    int loginnum;
     while(1) {
         if (state == -1 && !recv_client_account()) {
             printf("client closed\n");
             close(sockfd);
             return ;
         }
+        //write login num.
+        loginnum = userlist.getLoginNum();
+        write(sockfd,&loginnum,sizeof(int));
 
         read(sockfd,&state,sizeof(int));
 
@@ -97,6 +96,9 @@ void WorkerThread::run(void)
             table.leavetable(clientId);
 
             state = 0;
+        } else if (state == 2) {
+            //Do nothing.
+            //just loop and send loginnum
         }
     }
 }

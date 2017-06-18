@@ -73,3 +73,8 @@ void Userlist::logout(char *account)
     loginnum --;
     mutex.unlock();
 }
+
+int Userlist::getLoginNum(void)
+{
+    return loginnum;
+}

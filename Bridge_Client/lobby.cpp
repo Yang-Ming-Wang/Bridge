@@ -16,8 +16,14 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     join->setToolTip("Join to the Bridge Game");
     join->setGeometry(700,500,200,100);
 
+    refresh = new QPushButton(parent);
+    refresh->setText("refresh");
+    refresh->setToolTip("get online user infomation right now!!");
+    refresh->setGeometry(700,300,150,75);
+
     connect(logout,SIGNAL(clicked()),this,SLOT(logout_from_server()));
     connect(join,SIGNAL(clicked()),this,SLOT(join_game()));
+    connect(refresh,SIGNAL(clicked()),this,SLOT(get_online_info()));
 
     hide_everything();
 }
@@ -28,13 +34,20 @@ void Lobby::hide_everything(void)
     label->hide();
     logout->hide();
     join->hide();
+    refresh->hide();
 }
 
 void Lobby::show_everything(void)
 {
+    int loginnum;
+
     label->show();
     logout->show();
     join->show();
+    refresh->show();
+
+    read(sockfd,&loginnum,sizeof(int));
+    qInfo("Lobby: current people: %d",loginnum);
 }
 
 void Lobby::logout_from_server(void)
@@ -58,4 +71,14 @@ void Lobby::join_game(void)
     hide_everything();
     write(sockfd,&state,sizeof(int));
     emit play_game();
+}
+
+void Lobby::get_online_info(void)
+{
+    int state,loginnum;
+
+    state = 2;
+    write(sockfd,&state,sizeof(int));
+    read(sockfd,&loginnum,sizeof(int));
+    qInfo("Lobby: current people: %d",loginnum);
 }
