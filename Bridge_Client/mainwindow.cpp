@@ -5,15 +5,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     this->setFixedSize(1280,720);
 
-    int sockfd;
-
     login = new Login(this);
-    sockfd = login->getsocket();
-
     lobby = new Lobby(this);
-    lobby->setsocket(sockfd);
     game = new GameStage(this);
-    game->setsocket(sockfd);
     final = new FinalScreen(this);
 
     connect(login,SIGNAL(stage_change()),lobby,SLOT(show_everything()));
@@ -26,4 +20,32 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::connectIP(QString str)
+{
+    int sockfd;
+    struct sockaddr_in servaddr;
+    char *connect_ip = str.toLatin1().data();
+
+    if ((sockfd = socket(AF_INET,SOCK_STREAM,0)) < 0 ) {
+        qDebug("socket error");
+        QApplication::quit();
+    }
+
+    bzero(&servaddr,sizeof(servaddr));
+
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_port = htons(9877);
+
+    if (inet_pton(AF_INET,connect_ip,&servaddr.sin_addr) <= 0)
+        printf("inet_ption error for %s\n",connect_ip);
+
+    if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0) {
+        qDebug("connect error");
+        QApplication::quit();
+    }
+    login->setsocket(sockfd);
+    lobby->setsocket(sockfd);
+    game->setsocket(sockfd);
 }

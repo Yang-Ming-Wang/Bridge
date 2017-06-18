@@ -16,7 +16,7 @@ class Login : public QWidget
 
 public:
     explicit Login(QWidget *parent = nullptr);
-    int getsocket();
+    void setsocket(int);
 public slots:
     void show_everything(void);
 signals:
@@ -26,7 +26,6 @@ private slots:
     void register_to_server(void);
     void quit_game(void);
 private:
-    int connect_to_server(void);
     int send_account(int);
     void hide_everything(void);
     QPushButton *exitbtn,*loginbtn,*registerbtn;

@@ -40,7 +40,6 @@ Login::Login(QWidget *parent) : QWidget(parent)
     status->setGeometry(200,300,300,100);
     status->setFont(font);
 
-    sockfd = connect_to_server();
 }
 
 void Login::login_to_server()
@@ -112,29 +111,6 @@ int Login::send_account(int isreg)
     return -1;
 }
 
-int Login::connect_to_server()
-{
-    int sockfd;
-    struct sockaddr_in servaddr;
-
-    if ((sockfd = socket(AF_INET,SOCK_STREAM,0)) < 0 )
-        qDebug("socket error");
-
-    bzero(&servaddr,sizeof(servaddr));
-
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(9877);
-
-    if (inet_pton(AF_INET,"127.0.0.1",&servaddr.sin_addr) <= 0)
-        printf("inet_ption error for 127.0.0.1\n");
-
-    if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0) {
-        qDebug("connect error");
-        return -1;
-    }
-    return sockfd;
-}
-
 void Login::hide_everything(void)
 {
     exitbtn->hide();
@@ -161,9 +137,9 @@ void Login::show_everything(void)
     status->show();
 }
 
-int Login::getsocket()
+void Login::setsocket(int sock)
 {
-    return sockfd;
+    sockfd = sock;
 }
 
 void Login::quit_game(void)
