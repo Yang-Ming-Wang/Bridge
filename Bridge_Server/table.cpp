@@ -79,6 +79,11 @@ void Table::leavetable(int clientID)
         mutex.lock();
         seat[index].playerid = -1;
         currentPlayer--;
+        if (currentPlayer > 0) {
+            ready.wait(&mutex);
+        } else {
+            ready.wakeAll();
+        }
         mutex.unlock();
         turn = 0;
         return ;
@@ -119,7 +124,7 @@ void Table::setOrder(int round)
     turn = winner;
     result[round] = winner;
     for (i = 0;i < 4;i++) {
-        seat[i].order = (i - winner) % 4;
+        seat[i].order = (i - winner + 4) % 4;
         printf("client %d order %d\n",seat[i].playerid,seat[i].order);
     }
 }
