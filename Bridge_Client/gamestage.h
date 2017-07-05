@@ -13,16 +13,16 @@ class GameStage : public QWidget
     Q_OBJECT
 public:
     explicit GameStage(QWidget *parent = nullptr);
+    void game_start(void);
     void setsocket(int);
 
 signals:
-    void goto_final(int);
+    void stage_change(int);
 public slots:
     void show_everything(int*);
     void hide_everything(int);
     void show_others(int,int);
     void your_turn(bool);
-    void game_start(void);
 private slots:
     void send_card(int,int);
 private:

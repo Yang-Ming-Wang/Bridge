@@ -46,7 +46,11 @@ void ClientThread::run(void)
         }
     }
     read(sockfd,&i,sizeof(int));
-    emit result(i);
+    if (i == 1) {
+        emit result(3);
+    } else {
+        emit result(4);
+    }
 }
 
 void ClientThread::setsocket(int sock)

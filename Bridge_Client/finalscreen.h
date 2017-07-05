@@ -13,11 +13,11 @@ public:
     explicit FinalScreen(QWidget *parent = nullptr);
 
 signals:
-    void back_to_lobby(void);
+    void stage_change(int);
 public slots:
-    void show_everything(int);
+    void setWinner(int);
 private slots:
-    void hide_everything(void);
+    void back_to_lobby(void);
 private:
     QLabel *label;
     QPushButton *back;

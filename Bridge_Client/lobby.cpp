@@ -39,45 +39,14 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     connect(join,SIGNAL(clicked()),this,SLOT(join_game()));
     connect(refresh,SIGNAL(clicked()),this,SLOT(refresh_data()));
 
-    hide_everything();
-}
-
-
-void Lobby::hide_everything(void)
-{
-    int i;
-    for (i = 0;i < 8;i++) {
-        user[i]->hide();
-    }
-
-    label->hide();
-    logout->hide();
-    join->hide();
-    refresh->hide();
-}
-
-void Lobby::show_everything(void)
-{
-    int i;
-
-    label->show();
-    logout->show();
-    join->show();
-    refresh->show();
-
-    get_online_info();
-    for (i = 0;i < 8;i++) {
-        user[i]->show();
-    }
 }
 
 void Lobby::logout_from_server(void)
 {
     int state = 0;
 
-    hide_everything();
     write(sockfd,&state,sizeof(int));
-    emit go_back();
+    emit stage_change(0);
 }
 
 void Lobby::setsocket(int sock)
@@ -89,9 +58,8 @@ void Lobby::join_game(void)
 {
     int state = 1;
 
-    hide_everything();
     write(sockfd,&state,sizeof(int));
-    emit play_game();
+    emit stage_change(2);
 }
 
 void Lobby::get_online_info()

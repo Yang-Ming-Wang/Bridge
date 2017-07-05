@@ -50,7 +50,7 @@ void Login::login_to_server()
     switch (result) {
     case 1:
         status->setText("");
-        emit stage_change();
+        emit stage_change(1);
         break;
     case 2:
         status->setStyleSheet("QLabel {color:red}");

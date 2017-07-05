@@ -18,7 +18,7 @@ public:
     explicit Login(QWidget *parent = nullptr);
     void setsocket(int);
 signals:
-    void stage_change(void);
+    void stage_change(int);
 private slots:
     void login_to_server(void);
     void register_to_server(void);

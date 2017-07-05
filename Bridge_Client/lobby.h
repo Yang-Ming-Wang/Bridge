@@ -15,11 +15,7 @@ public:
     void get_online_info(void);
 
 signals:
-    void go_back(void);
-    void play_game(void);
-
-public slots:
-    void show_everything(void);
+    void stage_change(int);
 
 private slots:
     void logout_from_server(void);
@@ -27,7 +23,6 @@ private slots:
     void refresh_data(void);
 
 private:
-    void hide_everything(void);
     int sockfd;
     QLabel *label;
     QLabel *user[8];

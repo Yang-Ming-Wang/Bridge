@@ -4,7 +4,7 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
 {
     int i;
     for (i = 0; i < 13; i++) {
-        card[i] = new Card(parent,i);
+        card[i] = new Card(this,i);
         card[i]->move(100 + 75*i,500);
         card[i]->hide();
 
@@ -16,24 +16,24 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     connect(thread,SIGNAL(game_start(int*)),this,SLOT(show_everything(int*)));
     connect(thread,SIGNAL(result(int)),this,SLOT(hide_everything(int)));
 
-    other[0] = new Card(parent);
+    other[0] = new Card(this);
     other[0]->setClick(false);
     other[0]->move(100,230);
     other[0]->hide();
 
-    other[1] = new Card(parent);
+    other[1] = new Card(this);
     other[1]->setClick(false);
     other[1]->move(500,50);
     other[1]->hide();
 
-    other[2] = new Card(parent);
+    other[2] = new Card(this);
     other[2]->setClick(false);
     other[2]->move(1000,230);
     other[2]->hide();
 
     QFont font;
     font.setPointSize(14);
-    status = new QLabel(parent);
+    status = new QLabel(this);
     status->setGeometry(500,250,300,100);
     status->setFont(font);
     status->hide();
@@ -101,5 +101,5 @@ void GameStage::hide_everything(int result)
     for (i = 0;i < 3;i++) {
         other[i]->hide();
     }
-    emit goto_final(result);
+    emit stage_change(result);
 }

@@ -2,22 +2,20 @@
 
 FinalScreen::FinalScreen(QWidget *parent) : QWidget(parent)
 {
-    back = new QPushButton("Back",parent);
+    back = new QPushButton("Back",this);
     back->setGeometry(500,500,200,100);
-    back->hide();
-    connect(back,SIGNAL(clicked()),this,SLOT(hide_everything()));
+    connect(back,SIGNAL(clicked()),this,SLOT(back_to_lobby()));
 
     QFont font;
     font.setPointSize(14);
 
-    label = new QLabel(parent);
+    label = new QLabel(this);
     label->setGeometry(250,50,800,400);
     label->setScaledContents(true);
     label->setFont(font);
-    label->hide();
 }
 
-void FinalScreen::show_everything(int win)
+void FinalScreen::setWinner(int win)
 {
     QImage img;
     if (win == 1) {
@@ -26,14 +24,9 @@ void FinalScreen::show_everything(int win)
         img.load("image/loser.jpg");
     }
     label->setPixmap(QPixmap::fromImage(img));
-    label->show();
-    back->show();
 }
 
-void FinalScreen::hide_everything(void)
+void FinalScreen::back_to_lobby(void)
 {
-    label->hide();
-    back->hide();
-
-    emit back_to_lobby();
+    emit stage_change(1);
 }

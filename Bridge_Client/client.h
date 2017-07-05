@@ -18,7 +18,7 @@ public:
     ~Client();
 
 public slots:
-    void ChangeState(void);
+    void ChangeState(int);
 private:
     Login *login;
     Lobby *lobby;

@@ -9,15 +9,16 @@ Client::Client(QWidget *parent) : QWidget(parent)
     game = new GameStage(this);
     final = new FinalScreen(this);
 
-    connect(login,SIGNAL(stage_change()),this,SLOT(ChangeState()));
-    connect(lobby,SIGNAL(go_back()),this,SLOT(ChangeState()));
-    connect(lobby,SIGNAL(play_game()),game,SLOT(game_start()));
-    connect(game,SIGNAL(goto_final(int)),final,SLOT(show_everything(int)));
-    connect(final,SIGNAL(back_to_lobby()),lobby,SLOT(show_everything()));
+    connect(login,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
+    connect(lobby,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
+    connect(game,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
+    connect(final,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
 
     stack = new QStackedWidget;
     stack->addWidget(login);
     stack->addWidget(lobby);
+    stack->addWidget(game);
+    stack->addWidget(final);
 
     mainlayout = new QVBoxLayout;
     mainlayout->addWidget(stack);
@@ -59,22 +60,27 @@ bool Client::connectIP(QString str)
     return true;
 }
 
-void Client::ChangeState(void)
+void Client::ChangeState(int nextState)
 {
-    int index = stack->currentIndex();
-    qInfo("index %d",index);
-    switch (index) {
+    switch (nextState) {
     case 0:
-        stack->setCurrentIndex(1);
-        lobby->show_everything();
+        stack->setCurrentIndex(nextState);
         break;
     case 1:
-        stack->setCurrentIndex(0);
+        lobby->get_online_info();
+        stack->setCurrentIndex(nextState);
         break;
     case 2:
-
+        game->game_start();
+        stack->setCurrentIndex(nextState);
         break;
-    default:
+    case 3:
+        final->setWinner(1);
+        stack->setCurrentIndex(3);
+        break;
+    case 4:
+        final->setWinner(0);
+        stack->setCurrentIndex(3);
         break;
     }
 
