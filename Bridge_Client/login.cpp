@@ -3,31 +3,31 @@
 Login::Login(QWidget *parent) : QWidget(parent)
 {
 
-    exitbtn = new QPushButton("Exit",parent);
+    exitbtn = new QPushButton("Exit",this);
     exitbtn->setGeometry(100,500,200,100);
     exitbtn->setToolTip("Quit the Game");
     connect(exitbtn,SIGNAL(clicked()),this,SLOT(quit_game()));
 
-    loginbtn = new QPushButton("Login",parent);
+    loginbtn = new QPushButton("Login",this);
     loginbtn->setGeometry(500,500,200,100);
     loginbtn->setToolTip("Login to the Server");
     connect(loginbtn,SIGNAL(clicked()),this,SLOT(login_to_server()));
 
-    registerbtn = new QPushButton("Register",parent);
+    registerbtn = new QPushButton("Register",this);
     registerbtn->setGeometry(900,500,200,100);
     registerbtn->setToolTip("Register a Account");
     connect(registerbtn,SIGNAL(clicked()),this,SLOT(register_to_server()));
 
     QRegExp rx("\\w+");
-    QRegExpValidator *validator = new QRegExpValidator(rx,parent);
+    QRegExpValidator *validator = new QRegExpValidator(rx);
 
-    account = new QLineEdit(parent);
+    account = new QLineEdit(this);
     account->setPlaceholderText("your account:");
     account->setGeometry(150,100,300,50);
     account->setMaxLength(15);
     account->setValidator(validator);
 
-    password = new QLineEdit(parent);
+    password = new QLineEdit(this);
     password->setPlaceholderText("your password:");
     password->setEchoMode(QLineEdit::Password);
     password->setGeometry(150,200,300,50);
@@ -36,7 +36,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
 
     QFont font;
     font.setPointSize(14);
-    status = new QLabel(parent);
+    status = new QLabel(this);
     status->setGeometry(200,300,300,100);
     status->setFont(font);
 
@@ -50,7 +50,6 @@ void Login::login_to_server()
     switch (result) {
     case 1:
         status->setText("");
-        hide_everything();
         emit stage_change();
         break;
     case 2:
@@ -113,32 +112,6 @@ int Login::send_account(int isreg)
         return success;
     }
     return -1;
-}
-
-void Login::hide_everything(void)
-{
-    exitbtn->hide();
-    loginbtn->hide();
-    registerbtn->hide();
-
-    account->hide();
-    password->hide();
-
-    status->hide();
-
-    return ;
-}
-
-void Login::show_everything(void)
-{
-    exitbtn->show();
-    loginbtn->show();
-    registerbtn->show();
-
-    account->show();
-    password->show();
-
-    status->show();
 }
 
 void Login::setsocket(int sock)

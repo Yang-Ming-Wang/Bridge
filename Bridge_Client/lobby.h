@@ -12,6 +12,7 @@ class Lobby : public QWidget
 public:
     explicit Lobby(QWidget *parent = nullptr);
     void setsocket(int);
+    void get_online_info(void);
 
 signals:
     void go_back(void);
@@ -27,7 +28,6 @@ private slots:
 
 private:
     void hide_everything(void);
-    void get_online_info(void);
     int sockfd;
     QLabel *label;
     QLabel *user[8];

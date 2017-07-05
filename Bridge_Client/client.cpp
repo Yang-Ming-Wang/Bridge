@@ -1,28 +1,36 @@
-#include "mainwindow.h"
+#include "client.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
+Client::Client(QWidget *parent) : QWidget(parent)
 {
-    this->setFixedSize(1280,720);
+    setFixedSize(1280,720);
 
     login = new Login(this);
     lobby = new Lobby(this);
     game = new GameStage(this);
     final = new FinalScreen(this);
 
-    connect(login,SIGNAL(stage_change()),lobby,SLOT(show_everything()));
-    connect(lobby,SIGNAL(go_back()),login,SLOT(show_everything()));
+    connect(login,SIGNAL(stage_change()),this,SLOT(ChangeState()));
+    connect(lobby,SIGNAL(go_back()),this,SLOT(ChangeState()));
     connect(lobby,SIGNAL(play_game()),game,SLOT(game_start()));
     connect(game,SIGNAL(goto_final(int)),final,SLOT(show_everything(int)));
     connect(final,SIGNAL(back_to_lobby()),lobby,SLOT(show_everything()));
+
+    stack = new QStackedWidget;
+    stack->addWidget(login);
+    stack->addWidget(lobby);
+
+    mainlayout = new QVBoxLayout;
+    mainlayout->addWidget(stack);
+
+    setLayout(mainlayout);
 }
 
-MainWindow::~MainWindow()
+Client::~Client()
 {
 
 }
 
-bool MainWindow::connectIP(QString str)
+bool Client::connectIP(QString str)
 {
     int sockfd;
     struct sockaddr_in servaddr;
@@ -49,4 +57,25 @@ bool MainWindow::connectIP(QString str)
     lobby->setsocket(sockfd);
     game->setsocket(sockfd);
     return true;
+}
+
+void Client::ChangeState(void)
+{
+    int index = stack->currentIndex();
+    qInfo("index %d",index);
+    switch (index) {
+    case 0:
+        stack->setCurrentIndex(1);
+        lobby->show_everything();
+        break;
+    case 1:
+        stack->setCurrentIndex(0);
+        break;
+    case 2:
+
+        break;
+    default:
+        break;
+    }
+
 }

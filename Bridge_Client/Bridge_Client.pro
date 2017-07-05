@@ -25,19 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
         login.cpp \
         lobby.cpp \
         gamestage.cpp \
         card.cpp \
         clientthread.cpp \
-        finalscreen.cpp
+        finalscreen.cpp \
+        client.cpp
 
 HEADERS += \
-        mainwindow.h \
         login.h \
         lobby.h \
         gamestage.h \
         card.h \
         clientthread.h \
-        finalscreen.h
+        finalscreen.h \
+        client.h

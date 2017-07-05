@@ -5,30 +5,30 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
     QFont font;
     font.setPointSize(14);
 
-    label = new QLabel(parent);
+    label = new QLabel(this);
     label->setText("In Lobby");
     label->setGeometry(80,50,150,50);
     label->setAlignment(Qt::AlignCenter);
     label->setFont(font);
 
-    logout = new QPushButton(parent);
+    logout = new QPushButton(this);
     logout->setText("Logout");
     logout->setToolTip("Logout from server");
     logout->setGeometry(300,500,200,100);
 
-    join = new QPushButton(parent);
+    join = new QPushButton(this);
     join->setText("Join Game");
     join->setToolTip("Join to the Bridge Game");
     join->setGeometry(700,500,200,100);
 
-    refresh = new QPushButton(parent);
+    refresh = new QPushButton(this);
     refresh->setText("refresh");
     refresh->setToolTip("get online user infomation right now!!");
     refresh->setGeometry(800,100,100,50);
 
     int i;
     for (i = 0;i < 8;i++) {
-        user[i] = new QLabel(parent);
+        user[i] = new QLabel(this);
         user[i]->setText("");
         user[i]->setGeometry(300,50 + 50*i,360,50);
         user[i]->setStyleSheet("QLabel {color:green}");
