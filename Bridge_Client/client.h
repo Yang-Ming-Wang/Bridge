@@ -2,12 +2,14 @@
 #define CLIENT_H
 
 #include <QWidget>
-#include <QStackedWidget>
 #include <QVBoxLayout>
+#include <QStackedWidget>
 #include "login.h"
 #include "lobby.h"
 #include "gamestage.h"
 #include "finalscreen.h"
+#include "clientthread.h"
+#include "waitingscreen.h"
 
 class Client : public QWidget
 {
@@ -24,6 +26,8 @@ private:
     Lobby *lobby;
     GameStage *game;
     FinalScreen *final;
+    ClientThread *thread;
+    WaitingScreen *waitscreen;
     QStackedWidget *stack;
     QVBoxLayout *mainlayout;
 };

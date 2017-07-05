@@ -13,8 +13,7 @@ class GameStage : public QWidget
     Q_OBJECT
 public:
     explicit GameStage(QWidget *parent = nullptr);
-    void game_start(void);
-    void setsocket(int);
+    void setThread(ClientThread *);
 
 signals:
     void stage_change(int);

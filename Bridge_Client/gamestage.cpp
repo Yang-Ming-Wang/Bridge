@@ -6,15 +6,9 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     for (i = 0; i < 13; i++) {
         card[i] = new Card(this,i);
         card[i]->move(100 + 75*i,500);
-        card[i]->hide();
 
         connect(card[i],SIGNAL(selected_card(int,int)),this,SLOT(send_card(int,int)));
     }
-    thread = new ClientThread(this);
-    connect(thread,SIGNAL(getcard(int,int)),this,SLOT(show_others(int,int)));
-    connect(thread,SIGNAL(your_turn(bool)),this,SLOT(your_turn(bool)));
-    connect(thread,SIGNAL(game_start(int*)),this,SLOT(show_everything(int*)));
-    connect(thread,SIGNAL(result(int)),this,SLOT(hide_everything(int)));
 
     other[0] = new Card(this);
     other[0]->setClick(false);
@@ -36,7 +30,11 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     status = new QLabel(this);
     status->setGeometry(500,250,300,100);
     status->setFont(font);
-    status->hide();
+}
+
+void GameStage::setThread(ClientThread *t)
+{
+    thread = t;
 }
 
 void GameStage::show_everything(int* arr)
@@ -46,11 +44,6 @@ void GameStage::show_everything(int* arr)
         card[i]->setImage(arr[i]);
         card[i]->show();
     }
-}
-
-void GameStage::setsocket(int sock)
-{
-    thread->setsocket(sock);
 }
 
 void GameStage::send_card(int cardID,int who)
@@ -86,18 +79,9 @@ void GameStage::your_turn(bool flag)
     }
 }
 
-void GameStage::game_start(void)
-{
-    status->setStyleSheet("QLabel {}");
-    status->setText("Wait others to join");
-    status->show();
-    thread->start();
-}
-
 void GameStage::hide_everything(int result)
 {
     int i;
-    status->hide();
     for (i = 0;i < 3;i++) {
         other[i]->hide();
     }

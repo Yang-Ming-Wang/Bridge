@@ -8,15 +8,26 @@ Client::Client(QWidget *parent) : QWidget(parent)
     lobby = new Lobby(this);
     game = new GameStage(this);
     final = new FinalScreen(this);
+    waitscreen = new WaitingScreen(this);
+    thread = new ClientThread(this);
+    game->setThread(thread);
 
     connect(login,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
     connect(lobby,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
     connect(game,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
     connect(final,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
 
+    connect(thread,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
+
+    connect(thread,SIGNAL(getcard(int,int)),game,SLOT(show_others(int,int)));
+    connect(thread,SIGNAL(your_turn(bool)),game,SLOT(your_turn(bool)));
+    connect(thread,SIGNAL(game_start(int*)),game,SLOT(show_everything(int*)));
+    connect(thread,SIGNAL(result(int)),game,SLOT(hide_everything(int)));
+
     stack = new QStackedWidget;
     stack->addWidget(login);
     stack->addWidget(lobby);
+    stack->addWidget(waitscreen);
     stack->addWidget(game);
     stack->addWidget(final);
 
@@ -56,7 +67,7 @@ bool Client::connectIP(QString str)
     }
     login->setsocket(sockfd);
     lobby->setsocket(sockfd);
-    game->setsocket(sockfd);
+    thread->setsocket(sockfd);
     return true;
 }
 
@@ -71,16 +82,19 @@ void Client::ChangeState(int nextState)
         stack->setCurrentIndex(nextState);
         break;
     case 2:
-        game->game_start();
+        thread->start();
         stack->setCurrentIndex(nextState);
         break;
     case 3:
-        final->setWinner(1);
-        stack->setCurrentIndex(3);
+        stack->setCurrentIndex(nextState);
         break;
     case 4:
+        final->setWinner(1);
+        stack->setCurrentIndex(4);
+        break;
+    case 5:
         final->setWinner(0);
-        stack->setCurrentIndex(3);
+        stack->setCurrentIndex(4);
         break;
     }
 

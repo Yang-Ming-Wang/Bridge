@@ -31,7 +31,8 @@ SOURCES += \
         card.cpp \
         clientthread.cpp \
         finalscreen.cpp \
-        client.cpp
+        client.cpp \
+        waitingscreen.cpp
 
 HEADERS += \
         login.h \
@@ -40,4 +41,5 @@ HEADERS += \
         card.h \
         clientthread.h \
         finalscreen.h \
-        client.h
+        client.h \
+        waitingscreen.h
