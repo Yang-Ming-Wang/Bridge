@@ -3,43 +3,60 @@
 Login::Login(QWidget *parent) : QWidget(parent)
 {
 
-    exitbtn = new QPushButton("Exit",this);
-    exitbtn->setGeometry(100,500,200,100);
+    QFont font;
+    font.setPointSize(14);
+
+    exitbtn = new QPushButton("Exit");
+    exitbtn->setFixedHeight(100);
+    exitbtn->setFont(font);
     exitbtn->setToolTip("Quit the Game");
     connect(exitbtn,SIGNAL(clicked()),this,SLOT(quit_game()));
 
-    loginbtn = new QPushButton("Login",this);
-    loginbtn->setGeometry(500,500,200,100);
+    loginbtn = new QPushButton("Login");
+    loginbtn->setFixedHeight(100);
+    loginbtn->setFont(font);
     loginbtn->setToolTip("Login to the Server");
     connect(loginbtn,SIGNAL(clicked()),this,SLOT(login_to_server()));
 
-    registerbtn = new QPushButton("Register",this);
-    registerbtn->setGeometry(900,500,200,100);
+    registerbtn = new QPushButton("Register");
+    registerbtn->setFixedHeight(100);
+    registerbtn->setFont(font);
     registerbtn->setToolTip("Register a Account");
     connect(registerbtn,SIGNAL(clicked()),this,SLOT(register_to_server()));
 
-    QRegExp rx("\\w+");
-    QRegExpValidator *validator = new QRegExpValidator(rx);
+    QRegExpValidator *validator = new QRegExpValidator(QRegExp("\\w+"));
 
     account = new QLineEdit(this);
     account->setPlaceholderText("your account:");
-    account->setGeometry(150,100,300,50);
+    account->setFixedSize(300,50);
     account->setMaxLength(15);
     account->setValidator(validator);
 
     password = new QLineEdit(this);
     password->setPlaceholderText("your password:");
     password->setEchoMode(QLineEdit::Password);
-    password->setGeometry(150,200,300,50);
+    password->setFixedSize(300,50);
     password->setMaxLength(15);
     password->setValidator(validator);
 
-    QFont font;
-    font.setPointSize(14);
     status = new QLabel(this);
-    status->setGeometry(200,300,300,100);
+    status->setFixedSize(300,100);
     status->setFont(font);
 
+    hlayout = new QHBoxLayout;
+    hlayout->addWidget(exitbtn);
+    hlayout->addWidget(loginbtn);
+    hlayout->addWidget(registerbtn);
+    hlayout->setSpacing(100);
+
+    vlayout = new QVBoxLayout;
+    vlayout->addWidget(account);
+    vlayout->addWidget(password);
+    vlayout->addWidget(status);
+    vlayout->addLayout(hlayout);
+    vlayout->setMargin(50);
+
+    setLayout(vlayout);
 }
 
 void Login::login_to_server()

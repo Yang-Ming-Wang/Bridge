@@ -6,6 +6,8 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QRegExpValidator>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -28,6 +30,8 @@ private:
     QPushButton *exitbtn,*loginbtn,*registerbtn;
     QLineEdit *account,*password;
     QLabel *status;
+    QHBoxLayout *hlayout;
+    QVBoxLayout *vlayout;
     int sockfd;
 };
 

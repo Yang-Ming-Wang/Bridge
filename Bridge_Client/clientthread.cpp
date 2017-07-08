@@ -13,7 +13,6 @@ void ClientThread::run(void)
     int arr[13];
     read(sockfd,arr,sizeof(int) * 13);
     emit game_start(arr);
-    emit stage_change(3);
 
     //need to get turn to decide play card or not
     for (i = 0;i < 13;i++) {

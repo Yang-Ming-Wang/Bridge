@@ -2,7 +2,7 @@
 
 Client::Client(QWidget *parent) : QWidget(parent)
 {
-    setFixedSize(1280,720);
+    resize(1280,720);
 
     login = new Login(this);
     lobby = new Lobby(this);
@@ -16,8 +16,6 @@ Client::Client(QWidget *parent) : QWidget(parent)
     connect(lobby,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
     connect(game,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
     connect(final,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
-
-    connect(thread,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
 
     connect(thread,SIGNAL(getcard(int,int)),game,SLOT(show_others(int,int)));
     connect(thread,SIGNAL(your_turn(bool)),game,SLOT(your_turn(bool)));
@@ -75,27 +73,22 @@ void Client::ChangeState(int nextState)
 {
     switch (nextState) {
     case 0:
-        stack->setCurrentIndex(nextState);
         break;
     case 1:
         lobby->get_online_info();
-        stack->setCurrentIndex(nextState);
         break;
     case 2:
         thread->start();
-        stack->setCurrentIndex(nextState);
         break;
     case 3:
-        stack->setCurrentIndex(nextState);
         break;
     case 4:
         final->setWinner(1);
-        stack->setCurrentIndex(4);
         break;
     case 5:
+        nextState = 4;
         final->setWinner(0);
-        stack->setCurrentIndex(4);
         break;
     }
-
+    stack->setCurrentIndex(nextState);
 }

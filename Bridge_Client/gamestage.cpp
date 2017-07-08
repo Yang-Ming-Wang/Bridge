@@ -44,6 +44,7 @@ void GameStage::show_everything(int* arr)
         card[i]->setImage(arr[i]);
         card[i]->show();
     }
+    emit stage_change(3);
 }
 
 void GameStage::send_card(int cardID,int who)
