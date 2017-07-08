@@ -10,7 +10,10 @@ Client::Client(QWidget *parent) : QWidget(parent)
     final = new FinalScreen(this);
     waitscreen = new WaitingScreen(this);
     thread = new ClientThread(this);
-    game->setThread(thread);
+
+    login->attach(thread);
+    lobby->attach(thread);
+    game->attach(thread);
 
     connect(login,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
     connect(lobby,SIGNAL(stage_change(int)),this,SLOT(ChangeState(int)));
@@ -42,31 +45,7 @@ Client::~Client()
 
 bool Client::connectIP(QString str)
 {
-    int sockfd;
-    struct sockaddr_in servaddr;
-    char *connect_ip = str.toLatin1().data();
-
-    if ((sockfd = socket(AF_INET,SOCK_STREAM,0)) < 0 ) {
-        printf("socket error\n");
-        return false;
-    }
-
-    bzero(&servaddr,sizeof(servaddr));
-
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(9877);
-
-    if (inet_pton(AF_INET,connect_ip,&servaddr.sin_addr) <= 0)
-        printf("inet_ption error for %s\n",connect_ip);
-
-    if (::connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr)) < 0) {
-        printf("connect error\n");
-        return false;
-    }
-    login->setsocket(sockfd);
-    lobby->setsocket(sockfd);
-    thread->setsocket(sockfd);
-    return true;
+    return thread->connectIP(str);
 }
 
 void Client::ChangeState(int nextState)
@@ -75,7 +54,7 @@ void Client::ChangeState(int nextState)
     case 0:
         break;
     case 1:
-        lobby->get_online_info();
+        lobby->refresh_data();
         break;
     case 2:
         thread->start();

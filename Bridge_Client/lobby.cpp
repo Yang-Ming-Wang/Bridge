@@ -1,6 +1,6 @@
 #include "lobby.h"
 
-Lobby::Lobby(QWidget *parent) : QWidget(parent)
+Lobby::Lobby(QWidget *parent) : Subscriber(parent)
 {
     QFont font;
     font.setPointSize(14);
@@ -43,49 +43,31 @@ Lobby::Lobby(QWidget *parent) : QWidget(parent)
 
 void Lobby::logout_from_server(void)
 {
-    int state = 0;
-
-    write(sockfd,&state,sizeof(int));
+    thread->logout();
     emit stage_change(0);
-}
-
-void Lobby::setsocket(int sock)
-{
-    sockfd = sock;
 }
 
 void Lobby::join_game(void)
 {
-    int state = 1;
-
-    write(sockfd,&state,sizeof(int));
+    thread->join_game();
     emit stage_change(2);
-}
-
-void Lobby::get_online_info()
-{
-    int i,loginnum,win,lose;
-    char account[15];
-
-    for (i = 0;i < 8;i++) {
-        user[i]->setText("");
-    }
-
-    read(sockfd,&loginnum,sizeof(int));
-
-    for (i = 0;i < loginnum;i++) {
-        read(sockfd,account,sizeof(char) * 15);
-        read(sockfd,&win,sizeof(int));
-        read(sockfd,&lose,sizeof(int));
-        QString str(QString::fromLatin1(account) + "  " \
-                    + QString::number(win) + "  " + QString::number(lose));
-        user[i]->setText(str);
-    }
 }
 
 void Lobby::refresh_data()
 {
-    int state = 2;
-    write(sockfd,&state,sizeof(int));
-    get_online_info();
+    int i,loginnum,win[8],lose[8];
+    char account[8][15];
+
+    loginnum = thread->refresh_data(account,win,lose);
+
+    for (i = 0;i < loginnum;i++) {
+        QString str(QString::fromLatin1(account[i]) + "  " \
+                    + QString::number(win[i]) + "  " + QString::number(lose[i]));
+        user[i]->setText(str);
+    }
+
+    while (i < 8) {
+        user[i]->setText("");
+        i += 1;
+    }
 }

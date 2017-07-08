@@ -32,7 +32,8 @@ SOURCES += \
         clientthread.cpp \
         finalscreen.cpp \
         client.cpp \
-        waitingscreen.cpp
+        waitingscreen.cpp \
+        subscriber.cpp
 
 HEADERS += \
         login.h \
@@ -42,4 +43,5 @@ HEADERS += \
         clientthread.h \
         finalscreen.h \
         client.h \
-        waitingscreen.h
+        waitingscreen.h \
+        subscriber.h

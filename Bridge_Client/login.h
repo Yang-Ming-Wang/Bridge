@@ -8,17 +8,14 @@
 #include <QRegExpValidator>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include "subscriber.h"
 
-class Login : public QWidget
+class Login : public Subscriber
 {
     Q_OBJECT
 
 public:
     explicit Login(QWidget *parent = nullptr);
-    void setsocket(int);
 signals:
     void stage_change(int);
 private slots:
@@ -32,7 +29,6 @@ private:
     QLabel *status;
     QHBoxLayout *hlayout;
     QVBoxLayout *vlayout;
-    int sockfd;
 };
 
 #endif // LOGIN_H

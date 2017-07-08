@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
+#include <arpa/inet.h>
 #include <unistd.h>
 
 class ClientThread : public QThread
@@ -13,6 +14,12 @@ public:
     ClientThread(QObject*);
     void setsocket(int);
     bool notify(int);
+    bool connectIP(QString str);
+    int send_account(int,const char*,const char*);
+    void send_quit(void);
+    void logout(void);
+    void join_game(void);
+    int refresh_data(char (*)[15],int*,int*);
 protected:
     void run(void);
 private:

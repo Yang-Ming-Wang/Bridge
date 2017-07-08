@@ -3,17 +3,15 @@
 
 #include <QWidget>
 #include <QLabel>
-#include <unistd.h>
-#include <arpa/inet.h>
 #include "card.h"
 #include "clientthread.h"
+#include "subscriber.h"
 
-class GameStage : public QWidget
+class GameStage : public Subscriber
 {
     Q_OBJECT
 public:
     explicit GameStage(QWidget *parent = nullptr);
-    void setThread(ClientThread *);
 
 signals:
     void stage_change(int);
@@ -27,7 +25,6 @@ private slots:
 private:
     Card *card[13];
     Card *other[3];
-    ClientThread *thread;
     QLabel *status;
 };
 

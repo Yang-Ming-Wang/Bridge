@@ -1,8 +1,7 @@
 #include "login.h"
 
-Login::Login(QWidget *parent) : QWidget(parent)
+Login::Login(QWidget *parent) : Subscriber(parent)
 {
-
     QFont font;
     font.setPointSize(14);
 
@@ -62,7 +61,10 @@ Login::Login(QWidget *parent) : QWidget(parent)
 void Login::login_to_server()
 {
     int result;
-    result = send_account(0);
+    char acc[15],pwd[15];
+    strcpy(acc,account->text().toStdString().c_str());
+    strcpy(pwd,password->text().toStdString().c_str());
+    result = thread->send_account(0,acc,pwd);
 
     switch (result) {
     case 1:
@@ -91,7 +93,10 @@ void Login::login_to_server()
 void Login::register_to_server()
 {
     int result;
-    result = send_account(1);
+    char acc[15],pwd[15];
+    strcpy(acc,account->text().toStdString().c_str());
+    strcpy(pwd,password->text().toStdString().c_str());
+    result = thread->send_account(1,acc,pwd);
 
     switch (result) {
     case 1:
@@ -109,40 +114,8 @@ void Login::register_to_server()
     return ;
 }
 
-int Login::send_account(int isreg)
-{
-    char buffer[15];
-    int success;
-
-    if (sockfd >= 0) {
-        write(sockfd,&isreg,sizeof(int));
-
-        bzero(buffer,15);
-        strcpy(buffer,account->text().toStdString().c_str());
-        write(sockfd,buffer,15);
-
-        bzero(buffer,15);
-        strcpy(buffer,password->text().toStdString().c_str());
-        write(sockfd,buffer,15);
-
-        read(sockfd,&success,sizeof(int));
-        return success;
-    }
-    return -1;
-}
-
-void Login::setsocket(int sock)
-{
-    sockfd = sock;
-}
-
 void Login::quit_game(void)
 {
-    int isreg = -1;
-    qInfo("quit games");
-    if (sockfd >= 0) {
-        write(sockfd,&isreg,sizeof(int));
-        ::close(sockfd);
-    }
+    thread->send_quit();
     QApplication::quit();
 }

@@ -4,26 +4,24 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPushButton>
-#include <unistd.h>
+#include "subscriber.h"
 
-class Lobby : public QWidget
+class Lobby : public Subscriber
 {
     Q_OBJECT
 public:
     explicit Lobby(QWidget *parent = nullptr);
-    void setsocket(int);
-    void get_online_info(void);
 
 signals:
     void stage_change(int);
 
+public slots:
+    void refresh_data(void);
 private slots:
     void logout_from_server(void);
     void join_game(void);
-    void refresh_data(void);
 
 private:
-    int sockfd;
     QLabel *label;
     QLabel *user[8];
     QPushButton *logout,*join,*refresh;

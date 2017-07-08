@@ -1,6 +1,6 @@
 #include "gamestage.h"
 
-GameStage::GameStage(QWidget *parent) : QWidget(parent)
+GameStage::GameStage(QWidget *parent) : Subscriber(parent)
 {
     int i;
     for (i = 0; i < 13; i++) {
@@ -30,11 +30,6 @@ GameStage::GameStage(QWidget *parent) : QWidget(parent)
     status = new QLabel(this);
     status->setGeometry(500,250,300,100);
     status->setFont(font);
-}
-
-void GameStage::setThread(ClientThread *t)
-{
-    thread = t;
 }
 
 void GameStage::show_everything(int* arr)

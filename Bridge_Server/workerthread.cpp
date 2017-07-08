@@ -73,8 +73,6 @@ void WorkerThread::run(void)
             close(sockfd);
             return ;
         }
-        //write login num.
-        userlist.send_online_info(sockfd);
 
         read(sockfd,&state,sizeof(int));
 
@@ -92,8 +90,8 @@ void WorkerThread::run(void)
 
             table.leavetable(clientId);
         } else if (state == 2) {
-            //Do nothing.
-            //just loop and send loginnum
+            //write login num.
+            userlist.send_online_info(sockfd);
         }
     }
 }

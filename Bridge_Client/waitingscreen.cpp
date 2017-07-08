@@ -2,9 +2,6 @@
 
 WaitingScreen::WaitingScreen(QWidget *parent) : QWidget(parent)
 {
-    //for test
-    setFixedSize(1280,720);
-
     movie = new QMovie("loading.gif");
     processLabel = new QLabel(this);
     processLabel->setMovie(movie);
