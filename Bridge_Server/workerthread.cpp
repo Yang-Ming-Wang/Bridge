@@ -12,73 +12,68 @@ WorkerThread::WorkerThread(int id,int sock)
     sockfd = sock;
 }
 
-bool WorkerThread::recv_client_account(void)
+void WorkerThread::recv_client_account(void)
 {
     int isreg,result;
     char password[15];
 
-    do {
-        read(sockfd,&isreg,sizeof(int));
+    read(sockfd,&isreg,sizeof(int));
 
-        if (isreg == -1) {
-            return false;
+    read(sockfd,account,15);
+    printf("your account [%s]\n",account);
+
+    read(sockfd,password,15);
+    printf("your password [%s]\n",password);
+
+    if (isreg == 1) {
+        printf("registor:\n");
+        result = userlist.regist(account,password);
+        if (result == 1) {
+            printf("registor success\n");
+        } else if (result == 2) {
+            printf("can't create existing account\n");
         }
+    } else {
+        printf("login:\n");
+        result = userlist.login(account,password);
 
-        read(sockfd,account,15);
-        printf("your account [%s]\n",account);
-
-        read(sockfd,password,15);
-        printf("your password [%s]\n",password);
-
-        if (isreg == 1) {
-            printf("registor:\n");
-            result = userlist.regist(account,password);
-            if (result == 1) {
-                printf("registor success\n");
-            } else if (result == 2) {
-                printf("can't create existing account\n");
-            }
-        } else {
-            printf("login:\n");
-            result = userlist.login(account,password);
-
-            switch (result) {
-            case 1:
-                printf("login success\n");
-                break;
-            case 2:
-                printf("account not exist\n");
-                break;
-            case 3:
-                printf("incorrct password\n");
-                break;
-            case 4:
-                printf("already login\n");
-                break;
-            }
+        switch (result) {
+        case 1:
+            printf("login success\n");
+            break;
+        case 2:
+            printf("account not exist\n");
+            break;
+        case 3:
+            printf("incorrct password\n");
+            break;
+        case 4:
+            printf("already login\n");
+            break;
         }
-        write(sockfd,&result,sizeof(int));
-    } while (isreg == 1 || result != 1);
+    }
+    write(sockfd,&result,sizeof(int));
 
-    return true;
 }
 
 void WorkerThread::run(void)
 {
-    int state = 0;
-    int card[13];
-    while(1) {
-        if (state == 0 && !recv_client_account()) {
-            printf("client closed\n");
-            close(sockfd);
-            return ;
-        }
-
+    int state,card[13];
+    do {
         read(sockfd,&state,sizeof(int));
 
-        if (state == 0) {
+        switch (state) {
+        case -1:
+            printf("client closed\n");
+            close(sockfd);
+            break;
+        case 0:
             userlist.logout(account);
-        } else if (state == 1){
+            break;
+        case 1:
+            recv_client_account();
+            break;
+        case 2:
             printf("User [%d] a game\n",clientId);
             table.addtable(clientId);
             printf("client [%d] add table\n",clientId);
@@ -89,11 +84,12 @@ void WorkerThread::run(void)
             deal_card();
 
             table.leavetable(clientId);
-        } else if (state == 2) {
-            //write login num.
+            break;
+        case 3:
             userlist.send_online_info(sockfd);
+            break;
         }
-    }
+    } while (state > -1);
 }
 
 void WorkerThread::deal_card(void)

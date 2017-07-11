@@ -12,7 +12,6 @@ class ClientThread : public QThread
     Q_OBJECT
 public:
     ClientThread(QObject*);
-    void setsocket(int);
     bool notify(int);
     bool connectIP(QString str);
     int send_account(int,const char*,const char*);

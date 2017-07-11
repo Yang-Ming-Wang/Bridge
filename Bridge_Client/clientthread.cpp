@@ -82,8 +82,10 @@ bool ClientThread::connectIP(QString str)
 int ClientThread::send_account(int isreg,const char *account,const char *password)
 {
     char buffer[15];
-    int success;
+    int success,state;
 
+    state = 1;
+    write(sockfd,&state,sizeof(int));
     if (sockfd >= 0) {
         write(sockfd,&isreg,sizeof(int));
 
@@ -115,13 +117,13 @@ void ClientThread::logout(void)
 
 void ClientThread::join_game(void)
 {
-    int state = 1;
+    int state = 2;
     write(sockfd,&state,sizeof(int));
 }
 
 int ClientThread::refresh_data(char (*account)[15],int *win,int *lose)
 {
-    int i,loginnum,state = 2;
+    int i,loginnum,state = 3;
 
     write(sockfd,&state,sizeof(int));
     read(sockfd,&loginnum,sizeof(int));
@@ -133,11 +135,6 @@ int ClientThread::refresh_data(char (*account)[15],int *win,int *lose)
     }
 
     return loginnum;
-}
-
-void ClientThread::setsocket(int sock)
-{
-    sockfd = sock;
 }
 
 bool ClientThread::notify(int ID)
